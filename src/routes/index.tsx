@@ -2,8 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
-import whiplashImg from "@/assets/film-featured.jpg";
-import poetasImg from "@/assets/film-poetas.jpg";
+import whiplashAsset from "@/assets/whiplash.jpg.asset.json";
+import poetasAsset from "@/assets/poetas.jpg.asset.json";
+
 import cineclubeLogo from "@/assets/cineclube-logo.png.asset.json";
 import unifafireLogo from "@/assets/unifafire.png.asset.json";
 
