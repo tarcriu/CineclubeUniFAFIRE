@@ -26,7 +26,7 @@ export const Route = createFileRoute("/")({
 const sessions = [
   {
     id: "whiplash",
-    img: whiplashImg,
+    img: whiplashAsset.url,
     date: "26 DE AGOSTO DE 2026",
     title: "Whiplash",
     credits: "Damien Chazelle · 2014",
@@ -35,7 +35,7 @@ const sessions = [
   },
   {
     id: "poetas",
-    img: poetasImg,
+    img: poetasAsset.url,
     date: "26 DE AGOSTO DE 2026",
     title: "Sociedade dos Poetas Mortos",
     credits: "Peter Weir · 1989",
@@ -216,13 +216,13 @@ function Index() {
             <img
               src={cineclubeLogo.url}
               alt="Cine Clube"
-              className="h-14 w-auto opacity-70"
+              className="h-24 w-auto opacity-70"
             />
             <span className="h-10 w-px bg-border" />
             <img
               src={unifafireLogo.url}
               alt="UniFAFIRE"
-              className="h-7 w-auto opacity-75"
+              className="h-12 w-auto opacity-75"
             />
           </div>
 
