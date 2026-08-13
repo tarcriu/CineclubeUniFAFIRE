@@ -222,11 +222,11 @@ function Index() {
             <img
               src={unifafireLogo.url}
               alt="UniFAFIRE"
-              className="h-12 w-auto opacity-75"
+              className="h-8 w-auto opacity-75 sm:h-12"
             />
           </div>
 
-          <p className="max-w-[140px] text-right text-sm leading-snug text-muted-foreground">
+          <p className="hidden max-w-[140px] text-right text-sm leading-snug text-muted-foreground sm:block">
             Avalie e discuta as sessões do mês
           </p>
         </div>
