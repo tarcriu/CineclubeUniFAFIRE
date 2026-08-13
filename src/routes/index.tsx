@@ -209,15 +209,19 @@ function Index() {
       <header className="border-b border-border">
         <div className="mx-auto flex max-w-[832px] items-center justify-between px-4 py-6">
           <div className="flex items-center gap-5">
-            <div className="flex h-14 w-14 flex-col items-center justify-center rounded-full border-2 border-foreground/60 text-[10px] font-bold leading-tight tracking-wider text-foreground/70">
-              <span>CINE</span>
-              <span>CLUBE</span>
-            </div>
+            <img
+              src={cineclubeLogo.url}
+              alt="Cine Clube"
+              className="h-14 w-auto opacity-70"
+            />
             <span className="h-10 w-px bg-border" />
-            <span className="font-display text-3xl font-bold italic text-foreground/85">
-              UniFAFIRE
-            </span>
+            <img
+              src={unifafireLogo.url}
+              alt="UniFAFIRE"
+              className="h-7 w-auto opacity-75"
+            />
           </div>
+
           <p className="max-w-[140px] text-right text-sm leading-snug text-muted-foreground">
             Avalie e discuta as sessões do mês
           </p>
