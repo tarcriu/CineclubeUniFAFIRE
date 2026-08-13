@@ -39,23 +39,33 @@ export function StarsInput({
 }) {
   return (
     <div className="flex gap-1">
-      {[1, 2, 3, 4, 5].map((n) => (
-        <button
-          key={n}
-          type="button"
-          aria-label={String(n)}
-          onClick={() => onChange(n)}
-          className="transition-colors"
-        >
-          <Star
-            className={
-              n <= value
-                ? "h-6 w-6 fill-primary text-transparent"
-                : "h-6 w-6 fill-muted-foreground/35 text-transparent"
-            }
-          />
-        </button>
-      ))}
+      {[1, 2, 3, 4, 5].map((n) => {
+        const fill = Math.max(0, Math.min(1, value - (n - 1)));
+        return (
+          <span key={n} className="relative inline-block h-6 w-6">
+            <Star className="h-6 w-6 fill-muted-foreground/35 text-transparent" />
+            <span
+              className="pointer-events-none absolute left-0 top-0 overflow-hidden"
+              style={{ width: `${fill * 100}%` }}
+            >
+              <Star className="h-6 w-6 min-w-6 fill-primary text-transparent" />
+            </span>
+            <button
+              type="button"
+              aria-label={`${n - 0.5}`}
+              onClick={() => onChange(n - 0.5)}
+              className="absolute left-0 top-0 h-6 w-3"
+            />
+            <button
+              type="button"
+              aria-label={String(n)}
+              onClick={() => onChange(n)}
+              className="absolute right-0 top-0 h-6 w-3"
+            />
+          </span>
+        );
+      })}
     </div>
   );
 }
+
