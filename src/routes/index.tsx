@@ -4,6 +4,9 @@ import { ChevronDown } from "lucide-react";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
 import whiplashImg from "@/assets/film-featured.jpg";
 import poetasImg from "@/assets/film-poetas.jpg";
+import cineclubeLogo from "@/assets/cineclube-logo.png.asset.json";
+import unifafireLogo from "@/assets/unifafire.png.asset.json";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
