@@ -226,10 +226,15 @@ function Index() {
             />
           </div>
 
-          <p className="hidden max-w-[140px] text-right text-sm leading-snug text-muted-foreground sm:block">
-            Avalie e discuta as sessões do mês
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="hidden max-w-[140px] text-right text-sm leading-snug text-muted-foreground sm:block">
+              Avalie e discuta as sessões do mês
+            </p>
+            <ThemeToggle />
+          </div>
         </div>
+      </header>
+
       </header>
 
       <main className="mx-auto max-w-[832px] px-4 pb-24">
