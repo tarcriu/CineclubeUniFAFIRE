@@ -105,37 +105,37 @@
 
 .light {
   --background: oklch(0.99 0.005 150);
-  --foreground: oklch(0.32 0.07 158);
+  --foreground: oklch(0.28 0.10 145);
   --card: oklch(0.97 0.012 155);
-  --card-foreground: oklch(0.32 0.07 158);
+  --card-foreground: oklch(0.28 0.10 145);
   --popover: oklch(0.97 0.012 155);
-  --popover-foreground: oklch(0.32 0.07 158);
-  --primary: oklch(0.52 0.13 158);
+  --popover-foreground: oklch(0.28 0.10 145);
+  --primary: oklch(0.42 0.14 145);
   --primary-foreground: oklch(0.99 0.005 150);
   --secondary: oklch(0.95 0.02 155);
-  --secondary-foreground: oklch(0.32 0.07 158);
+  --secondary-foreground: oklch(0.28 0.10 145);
   --muted: oklch(0.95 0.02 155);
-  --muted-foreground: oklch(0.55 0.06 158);
-  --accent: oklch(0.62 0.12 158);
+  --muted-foreground: oklch(0.48 0.09 145);
+  --accent: oklch(0.55 0.13 145);
   --accent-foreground: oklch(0.99 0.005 150);
   --destructive: oklch(0.58 0.2 25);
   --destructive-foreground: oklch(0.98 0.01 80);
   --border: oklch(0.88 0.03 155);
   --input: oklch(0.88 0.03 155);
-  --ring: oklch(0.52 0.13 158);
+  --ring: oklch(0.42 0.14 145);
   --sidebar: oklch(0.97 0.012 155);
-  --sidebar-foreground: oklch(0.32 0.07 158);
-  --sidebar-primary: oklch(0.52 0.13 158);
+  --sidebar-foreground: oklch(0.28 0.10 145);
+  --sidebar-primary: oklch(0.42 0.14 145);
   --sidebar-primary-foreground: oklch(0.99 0.005 150);
   --sidebar-accent: oklch(0.95 0.02 155);
-  --sidebar-accent-foreground: oklch(0.32 0.07 158);
+  --sidebar-accent-foreground: oklch(0.28 0.10 145);
   --sidebar-border: oklch(0.88 0.03 155);
-  --sidebar-ring: oklch(0.52 0.13 158);
+  --sidebar-ring: oklch(0.42 0.14 145);
 }
 
 .light img[alt="Cine Clube"],
 .light img[alt="UniFAFIRE"] {
-  filter: invert(1) sepia(1) saturate(3) hue-rotate(90deg) brightness(0.55);
+  filter: sepia(1) saturate(5) hue-rotate(95deg) brightness(0.55);
 }
 
 
