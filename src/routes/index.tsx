@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
+import { ThemeToggle } from "@/components/ThemeToggle";
+
 import whiplashAsset from "@/assets/whiplash.jpg.asset.json";
 import poetasAsset from "@/assets/poetas.jpg.asset.json";
 
@@ -226,11 +228,16 @@ function Index() {
             />
           </div>
 
-          <p className="hidden max-w-[140px] text-right text-sm leading-snug text-muted-foreground sm:block">
-            Avalie e discuta as sessões do mês
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="hidden max-w-[140px] text-right text-sm leading-snug text-muted-foreground sm:block">
+              Avalie e discuta as sessões do mês
+            </p>
+            <ThemeToggle />
+          </div>
         </div>
       </header>
+
+
 
       <main className="mx-auto max-w-[832px] px-4 pb-24">
         <section className="pt-12">
