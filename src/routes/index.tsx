@@ -188,11 +188,14 @@ function AcervoRow({ item }: { item: (typeof acervo)[number] }) {
       >
         <div>
           <h4 className="font-display text-xl italic">
-            {item.title}{" "}
-            <span className="font-sans text-[13px] not-italic text-muted-foreground">
+            {item.title}
+            <span className="ml-2 hidden font-sans text-[13px] not-italic text-muted-foreground sm:inline">
               {item.credits}
             </span>
           </h4>
+          <p className="mt-0.5 text-[13px] text-muted-foreground sm:hidden">
+            {item.credits}
+          </p>
           <p className="mt-1 text-[13px] text-muted-foreground">{item.date}</p>
         </div>
         <div className="flex shrink-0 items-center gap-3">
