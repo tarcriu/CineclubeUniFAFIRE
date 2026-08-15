@@ -133,10 +133,18 @@
   --sidebar-ring: oklch(0.42 0.14 145);
 }
 
-.light img[alt="Cine Clube"],
-.light img[alt="UniFAFIRE"] {
-  filter: brightness(0) saturate(1) invert(0.29) sepia(1) saturate(5.81) hue-rotate(125deg) brightness(1.04) contrast(1.16);
+.logo-light {
+  display: none;
 }
+
+.light .logo-light {
+  display: block;
+}
+
+.light .logo-dark {
+  display: none;
+}
+
 
 
 @layer base {

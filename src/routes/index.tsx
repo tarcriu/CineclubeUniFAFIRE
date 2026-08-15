@@ -9,6 +9,8 @@ import poetasAsset from "@/assets/poetas.jpg.asset.json";
 
 import cineclubeLogo from "@/assets/cineclube-logo.png.asset.json";
 import unifafireLogo from "@/assets/unifafire.png.asset.json";
+import cineclubeLogoGreen from "@/assets/cineclube-logo-green.png.asset.json";
+import unifafireLogoGreen from "@/assets/unifafire-green.png.asset.json";
 
 
 export const Route = createFileRoute("/")({
@@ -218,13 +220,23 @@ function Index() {
             <img
               src={cineclubeLogo.url}
               alt="Cine Clube"
-              className="h-24 w-auto opacity-70"
+              className="logo-dark h-24 w-auto opacity-70"
+            />
+            <img
+              src={cineclubeLogoGreen.url}
+              alt="Cine Clube"
+              className="logo-light h-24 w-auto"
             />
             <span className="h-10 w-px bg-border" />
             <img
               src={unifafireLogo.url}
               alt="UniFAFIRE"
-              className="h-8 w-auto opacity-75 sm:h-12"
+              className="logo-dark h-8 w-auto opacity-75 sm:h-12"
+            />
+            <img
+              src={unifafireLogoGreen.url}
+              alt="UniFAFIRE"
+              className="logo-light h-8 w-auto sm:h-12"
             />
           </div>
 
@@ -232,8 +244,11 @@ function Index() {
             <p className="hidden max-w-[140px] text-right text-sm leading-snug text-muted-foreground sm:block">
               Avalie e discuta as sessões do mês
             </p>
-            <ThemeToggle />
+            <span className="hidden sm:block">
+              <ThemeToggle />
+            </span>
           </div>
+
         </div>
       </header>
 
@@ -242,6 +257,9 @@ function Index() {
       <main className="mx-auto max-w-[832px] px-4 pb-24">
         <section className="pt-12">
           <div className="flex items-center gap-4">
+            <span className="sm:hidden">
+              <ThemeToggle />
+            </span>
             <h2 className="font-display text-2xl italic">Este mês</h2>
             <span className="text-[11px] tracking-[0.15em] text-muted-foreground">
               AGOSTO 2026
