@@ -48,44 +48,100 @@ const sessions = [
   },
 ];
 
+type Review = { name?: string; rating: number; comment?: string; date: string };
+
 const acervo = [
   {
     title: "Whiplash",
     credits: "Damien Chazelle · 2014",
     date: "26 de agosto de 2026",
     rating: null as number | null,
+    reviews: [] as Review[],
   },
   {
     title: "Sociedade dos Poetas Mortos",
     credits: "Peter Weir · 1989",
     date: "26 de agosto de 2026",
     rating: null as number | null,
+    reviews: [] as Review[],
   },
   {
     title: "Homem com H",
     credits: "Esmir Filho · 2025",
     date: "27 de maio de 2026",
     rating: 4.2,
+    reviews: [
+      {
+        name: "Valentina Cruz",
+        rating: 5,
+        comment:
+          "As sequências em câmera lenta e o Nat King Cole na trilha — fui completamente tomada. Um filme que vou carregar por anos.",
+        date: "11 jul 2026",
+      },
+      {
+        name: "Diego Ríos",
+        rating: 4,
+        comment:
+          "Lindo e deliberadamente contido. Quando você se rende ao ritmo, a saudade se torna insuportável no melhor sentido.",
+        date: "11 jul 2026",
+      },
+      {
+        name: "Priya Menon",
+        rating: 4,
+        comment:
+          "Cada quadro poderia estar numa galeria. Os qipaos da Maggie Cheung sozinhos mereceriam uma exposição separada.",
+        date: "13 jul 2026",
+      },
+      { rating: 4, date: "14 jul 2026" },
+      { name: "Marcos Vilela", rating: 4, date: "15 jul 2026" },
+    ] as Review[],
   },
   {
     title: "A Ira de um Anjo",
     credits: "Larry Peerce · 1992",
     date: "13 de maio de 2026",
     rating: 4.3,
+    reviews: [
+      {
+        name: "Ana Beatriz",
+        rating: 4.5,
+        comment: "Difícil de assistir, impossível de esquecer.",
+        date: "20 mai 2026",
+      },
+      { rating: 4, date: "21 mai 2026" },
+    ] as Review[],
   },
   {
     title: "Lorax: Em Busca da Trúfula Perdida",
     credits: "Chris Renaud · 2012",
     date: "22 de abril de 2026",
     rating: 3.7,
+    reviews: [
+      {
+        name: "Rafael Lima",
+        rating: 3.5,
+        comment: "Simpático e colorido, mas a mensagem fica no raso.",
+        date: "28 abr 2026",
+      },
+      { name: "Júlia Prado", rating: 4, date: "29 abr 2026" },
+    ] as Review[],
   },
   {
     title: "Não Se Preocupe, Querida",
     credits: "Olivia Wilde · 2022",
     date: "23 de março de 2026",
     rating: 4.7,
+    reviews: [
+      {
+        rating: 5,
+        comment: "A direção de arte carrega o filme inteiro nas costas.",
+        date: "30 mar 2026",
+      },
+      { name: "Camila Souza", rating: 4.5, date: "31 mar 2026" },
+    ] as Review[],
   },
 ];
+
 
 function SessionCard({ session }: { session: (typeof sessions)[number] }) {
   const [rating, setRating] = useState(0);
@@ -210,7 +266,74 @@ function AcervoRow({ item }: { item: (typeof acervo)[number] }) {
           />
         </div>
       </button>
+
+      {open && (
+        <div className="pb-6">
+          {item.reviews.length === 0 ? (
+            <p className="pb-2 text-[13px] text-muted-foreground">
+              Nenhuma avaliação ainda.
+            </p>
+          ) : (
+            <>
+              <div className="rounded-md bg-secondary/50 px-4 py-3">
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+                  <span className="text-[13px] text-muted-foreground">
+                    {item.reviews.length} {item.reviews.length === 1 ? "voto" : "votos"}
+                  </span>
+                  {[5, 4, 3, 2, 1].map((n) => {
+                    const count = item.reviews.filter(
+                      (r) => Math.round(r.rating) === n,
+                    ).length;
+                    const pct = (count / item.reviews.length) * 100;
+                    return (
+                      <div key={n} className="flex items-center gap-2">
+                        <span className="text-[13px] text-muted-foreground">{n}</span>
+                        <StarsDisplay value={1} size={11} />
+                        <span className="h-[6px] w-[110px] overflow-hidden rounded-full bg-muted-foreground/20">
+                          <span
+                            className="block h-full rounded-full bg-primary"
+                            style={{ width: `${pct}%` }}
+                          />
+                        </span>
+                        <span className="text-[13px] text-muted-foreground">{count}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <ul className="mt-4 space-y-4">
+                {item.reviews.map((r, i) => {
+                  const name = r.name?.trim() || "Anônimo";
+                  return (
+                    <li key={i} className="flex gap-3">
+                      <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-secondary text-[12px] text-muted-foreground">
+                        {name.charAt(0).toUpperCase()}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                          <span className="text-sm text-foreground/90">{name}</span>
+                          <StarsDisplay value={r.rating} size={12} />
+                          <span className="ml-auto text-[12px] text-muted-foreground">
+                            {r.date}
+                          </span>
+                        </div>
+                        {r.comment && (
+                          <p className="mt-1 text-sm leading-relaxed text-foreground/80">
+                            {r.comment}
+                          </p>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </>
+          )}
+        </div>
+      )}
     </div>
+
   );
 }
 
