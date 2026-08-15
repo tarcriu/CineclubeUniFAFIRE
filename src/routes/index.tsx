@@ -257,6 +257,9 @@ function Index() {
       <main className="mx-auto max-w-[832px] px-4 pb-24">
         <section className="pt-12">
           <div className="flex items-center gap-4">
+            <span className="sm:hidden">
+              <ThemeToggle />
+            </span>
             <h2 className="font-display text-2xl italic">Este mês</h2>
             <span className="text-[11px] tracking-[0.15em] text-muted-foreground">
               AGOSTO 2026
