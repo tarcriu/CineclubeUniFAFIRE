@@ -9,6 +9,8 @@ import poetasAsset from "@/assets/poetas.jpg.asset.json";
 
 import cineclubeLogo from "@/assets/cineclube-logo.png.asset.json";
 import unifafireLogo from "@/assets/unifafire.png.asset.json";
+import cineclubeLogoGreen from "@/assets/cineclube-logo-green.png.asset.json";
+import unifafireLogoGreen from "@/assets/unifafire-green.png.asset.json";
 
 
 export const Route = createFileRoute("/")({
