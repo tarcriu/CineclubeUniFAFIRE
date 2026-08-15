@@ -220,13 +220,23 @@ function Index() {
             <img
               src={cineclubeLogo.url}
               alt="Cine Clube"
-              className="h-24 w-auto opacity-70"
+              className="logo-dark h-24 w-auto opacity-70"
+            />
+            <img
+              src={cineclubeLogoLight.url}
+              alt="Cine Clube"
+              className="logo-light h-24 w-auto"
             />
             <span className="h-10 w-px bg-border" />
             <img
               src={unifafireLogo.url}
               alt="UniFAFIRE"
-              className="h-8 w-auto opacity-75 sm:h-12"
+              className="logo-dark h-8 w-auto opacity-75 sm:h-12"
+            />
+            <img
+              src={unifafireLogoLight.url}
+              alt="UniFAFIRE"
+              className="logo-light h-8 w-auto sm:h-12"
             />
           </div>
 
