@@ -221,15 +221,12 @@ function SessionCard({
           {session.synopsis}
         </p>
 
-        <form
-          className="mt-6"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setRating(0);
-            setName("");
-            setComment("");
-          }}
-        >
+        {done ? (
+          <p className="mt-6 rounded-md bg-secondary/50 px-4 py-3 text-sm text-muted-foreground">
+            Você já avaliou este filme neste aparelho.
+          </p>
+        ) : (
+        <form className="mt-6" onSubmit={handleSubmit}>
           <p className="text-[11px] tracking-[0.12em] text-muted-foreground">
             SUA NOTA <span className="text-primary">*</span>
           </p>
