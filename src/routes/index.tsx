@@ -157,10 +157,46 @@ const acervo = [
 ];
 
 
-function SessionCard({ session }: { session: (typeof sessions)[number] }) {
+function SessionCard({
+  session,
+  reviews,
+}: {
+  session: (typeof sessions)[number];
+  reviews: DbReview[];
+}) {
+  const queryClient = useQueryClient();
   const [rating, setRating] = useState(0);
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+  const [deviceId, setDeviceId] = useState("");
+
+  useEffect(() => setDeviceId(getDeviceId()), []);
+
+  const mine = reviews.find((r) => r.movie_id === session.id && r.device_id === deviceId);
+  const done = Boolean(mine);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    if (rating <= 0) {
+      setError("Escolha uma nota.");
+      return;
+    }
+    setSending(true);
+    const result = await submitReview({ movieId: session.id, rating, name, comment });
+    setSending(false);
+    if (!result.ok) {
+      setError(result.message);
+      return;
+    }
+    setRating(0);
+    setName("");
+    setComment("");
+    await queryClient.invalidateQueries({ queryKey: ["reviews"] });
+  }
+
 
   return (
     <article className="overflow-hidden rounded-lg border border-border bg-card">
