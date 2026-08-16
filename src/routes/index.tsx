@@ -1,8 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { ChevronDown } from "lucide-react";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import {
+  formatReviewDate,
+  getDeviceId,
+  submitReview,
+  useReviews,
+  type DbReview,
+} from "@/lib/reviews";
 
 import whiplashAsset from "@/assets/whiplash.jpg.asset.json";
 import poetasAsset from "@/assets/poetas.jpg.asset.json";
