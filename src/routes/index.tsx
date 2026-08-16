@@ -304,10 +304,13 @@ function AcervoRow({
       })),
   ];
 
+  const hasDbReviews = reviews.length > reviews.length;
   const rating =
-    reviews.length === 0
-      ? null
-      : reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+    item.rating !== null && !hasDbReviews
+      ? item.rating
+      : reviews.length === 0
+        ? null
+        : reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
 
 
   return (
@@ -330,10 +333,10 @@ function AcervoRow({
           <p className="mt-1 text-[13px] text-muted-foreground">{item.date}</p>
         </div>
         <div className="flex shrink-0 items-center gap-3">
-          {item.rating !== null && (
+          {rating !== null && (
             <>
-              <StarsDisplay value={item.rating} />
-              <span className="text-sm text-foreground/90">{item.rating.toFixed(1)}</span>
+              <StarsDisplay value={rating} />
+              <span className="text-sm text-foreground/90">{rating.toFixed(1)}</span>
             </>
           )}
           <ChevronDown
@@ -344,7 +347,7 @@ function AcervoRow({
 
       {open && (
         <div className="pb-6">
-          {item.reviews.length === 0 ? (
+          {reviews.length === 0 ? (
             <p className="pb-2 text-[13px] text-muted-foreground">
               Nenhuma avaliação ainda.
             </p>
@@ -353,13 +356,13 @@ function AcervoRow({
               <div className="rounded-md bg-secondary/50 px-4 py-3">
                 <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
                   <span className="text-[13px] text-muted-foreground">
-                    {item.reviews.length} {item.reviews.length === 1 ? "voto" : "votos"}
+                    {reviews.length} {reviews.length === 1 ? "voto" : "votos"}
                   </span>
                   {[5, 4, 3, 2, 1].map((n) => {
-                    const count = item.reviews.filter(
+                    const count = reviews.filter(
                       (r) => Math.round(r.rating) === n,
                     ).length;
-                    const pct = (count / item.reviews.length) * 100;
+                    const pct = (count / reviews.length) * 100;
                     return (
                       <div key={n} className="flex items-center gap-2">
                         <span className="text-[13px] text-muted-foreground">{n}</span>
@@ -378,7 +381,7 @@ function AcervoRow({
               </div>
 
               <ul className="mt-4 space-y-4">
-                {item.reviews
+                {reviews
                   .filter((r) => r.name?.trim() || r.comment?.trim())
                   .map((r, i) => {
                     const name = r.name?.trim() || "Anônimo";
@@ -415,6 +418,8 @@ function AcervoRow({
 }
 
 function Index() {
+  const { data: dbReviews = [] } = useReviews();
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border">
@@ -472,7 +477,7 @@ function Index() {
 
           <div className="mt-6 space-y-12">
             {sessions.map((s) => (
-              <SessionCard key={s.id} session={s} />
+              <SessionCard key={s.id} session={s} reviews={dbReviews} />
             ))}
           </div>
         </section>
@@ -493,7 +498,7 @@ function Index() {
 
           <div className="mt-2">
             {acervo.map((item) => (
-              <AcervoRow key={item.title + item.date} item={item} />
+              <AcervoRow key={item.title + item.date} item={item} dbReviews={dbReviews} />
             ))}
           </div>
         </section>
