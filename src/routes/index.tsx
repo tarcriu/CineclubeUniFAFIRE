@@ -283,8 +283,32 @@ function SessionCard({
   );
 }
 
-function AcervoRow({ item }: { item: (typeof acervo)[number] }) {
+function AcervoRow({
+  item,
+  dbReviews,
+}: {
+  item: (typeof acervo)[number];
+  dbReviews: DbReview[];
+}) {
   const [open, setOpen] = useState(false);
+
+  const reviews: Review[] = [
+    ...item.reviews,
+    ...dbReviews
+      .filter((r) => r.movie_id === item.id)
+      .map((r) => ({
+        ...(r.name ? { name: r.name } : {}),
+        rating: Number(r.rating),
+        ...(r.comment ? { comment: r.comment } : {}),
+        date: formatReviewDate(r.created_at),
+      })),
+  ];
+
+  const rating =
+    reviews.length === 0
+      ? null
+      : reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+
 
   return (
     <div className="border-b border-border">
