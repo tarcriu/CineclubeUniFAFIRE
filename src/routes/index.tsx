@@ -303,30 +303,32 @@ function AcervoRow({ item }: { item: (typeof acervo)[number] }) {
               </div>
 
               <ul className="mt-4 space-y-4">
-                {item.reviews.map((r, i) => {
-                  const name = r.name?.trim() || "Anônimo";
-                  return (
-                    <li key={i} className="flex gap-3">
-                      <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-secondary text-[12px] text-muted-foreground">
-                        {name.charAt(0).toUpperCase()}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                          <span className="text-sm text-foreground/90">{name}</span>
-                          <StarsDisplay value={r.rating} size={12} />
-                          <span className="ml-auto text-[12px] text-muted-foreground">
-                            {r.date}
-                          </span>
+                {item.reviews
+                  .filter((r) => r.name?.trim() || r.comment?.trim())
+                  .map((r, i) => {
+                    const name = r.name?.trim() || "Anônimo";
+                    return (
+                      <li key={i} className="flex gap-3">
+                        <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-secondary text-[12px] text-muted-foreground">
+                          {name.charAt(0).toUpperCase()}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                            <span className="text-sm text-foreground/90">{name}</span>
+                            <StarsDisplay value={r.rating} size={12} />
+                            <span className="ml-auto text-[12px] text-muted-foreground">
+                              {r.date}
+                            </span>
+                          </div>
+                          {r.comment && (
+                            <p className="mt-1 text-sm leading-relaxed text-foreground/80">
+                              {r.comment}
+                            </p>
+                          )}
                         </div>
-                        {r.comment && (
-                          <p className="mt-1 text-sm leading-relaxed text-foreground/80">
-                            {r.comment}
-                          </p>
-                        )}
-                      </div>
-                    </li>
-                  );
-                })}
+                      </li>
+                    );
+                  })}
               </ul>
             </>
           )}
