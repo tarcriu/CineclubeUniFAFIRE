@@ -304,7 +304,7 @@ function AcervoRow({
       })),
   ];
 
-  const hasDbReviews = reviews.length > reviews.length;
+  const hasDbReviews = dbReviews.some((r) => r.movie_id === item.id);
   const rating =
     item.rating !== null && !hasDbReviews
       ? item.rating
