@@ -1,8 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { ChevronDown } from "lucide-react";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import {
+  formatReviewDate,
+  getDeviceId,
+  submitReview,
+  useReviews,
+  type DbReview,
+} from "@/lib/reviews";
 
 import whiplashAsset from "@/assets/whiplash.jpg.asset.json";
 import poetasAsset from "@/assets/poetas.jpg.asset.json";
@@ -52,6 +60,7 @@ type Review = { name?: string; rating: number; comment?: string; date: string };
 
 const acervo = [
   {
+    id: "whiplash",
     title: "Whiplash",
     credits: "Damien Chazelle · 2014",
     date: "26 de agosto de 2026",
@@ -59,6 +68,7 @@ const acervo = [
     reviews: [] as Review[],
   },
   {
+    id: "poetas",
     title: "Sociedade dos Poetas Mortos",
     credits: "Peter Weir · 1989",
     date: "26 de agosto de 2026",
@@ -66,6 +76,7 @@ const acervo = [
     reviews: [] as Review[],
   },
   {
+    id: "homem-com-h",
     title: "Homem com H",
     credits: "Esmir Filho · 2025",
     date: "27 de maio de 2026",
@@ -97,6 +108,7 @@ const acervo = [
     ] as Review[],
   },
   {
+    id: "ira-anjo",
     title: "A Ira de um Anjo",
     credits: "Larry Peerce · 1992",
     date: "13 de maio de 2026",
@@ -112,6 +124,7 @@ const acervo = [
     ] as Review[],
   },
   {
+    id: "lorax",
     title: "Lorax: Em Busca da Trúfula Perdida",
     credits: "Chris Renaud · 2012",
     date: "22 de abril de 2026",
@@ -127,6 +140,7 @@ const acervo = [
     ] as Review[],
   },
   {
+    id: "nao-se-preocupe",
     title: "Não Se Preocupe, Querida",
     credits: "Olivia Wilde · 2022",
     date: "23 de março de 2026",
@@ -143,10 +157,46 @@ const acervo = [
 ];
 
 
-function SessionCard({ session }: { session: (typeof sessions)[number] }) {
+function SessionCard({
+  session,
+  reviews,
+}: {
+  session: (typeof sessions)[number];
+  reviews: DbReview[];
+}) {
+  const queryClient = useQueryClient();
   const [rating, setRating] = useState(0);
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+  const [deviceId, setDeviceId] = useState("");
+
+  useEffect(() => setDeviceId(getDeviceId()), []);
+
+  const mine = reviews.find((r) => r.movie_id === session.id && r.device_id === deviceId);
+  const done = Boolean(mine);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    if (rating <= 0) {
+      setError("Escolha uma nota.");
+      return;
+    }
+    setSending(true);
+    const result = await submitReview({ movieId: session.id, rating, name, comment });
+    setSending(false);
+    if (!result.ok) {
+      setError(result.message);
+      return;
+    }
+    setRating(0);
+    setName("");
+    setComment("");
+    await queryClient.invalidateQueries({ queryKey: ["reviews"] });
+  }
+
 
   return (
     <article className="overflow-hidden rounded-lg border border-border bg-card">
@@ -171,15 +221,12 @@ function SessionCard({ session }: { session: (typeof sessions)[number] }) {
           {session.synopsis}
         </p>
 
-        <form
-          className="mt-6"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setRating(0);
-            setName("");
-            setComment("");
-          }}
-        >
+        {done ? (
+          <p className="mt-6 rounded-md bg-secondary/50 px-4 py-3 text-sm text-muted-foreground">
+            Você já avaliou este filme neste aparelho.
+          </p>
+        ) : (
+        <form className="mt-6" onSubmit={handleSubmit}>
           <p className="text-[11px] tracking-[0.12em] text-muted-foreground">
             SUA NOTA <span className="text-primary">*</span>
           </p>
@@ -220,20 +267,51 @@ function SessionCard({ session }: { session: (typeof sessions)[number] }) {
             </div>
           </div>
 
+          {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
+
           <button
             type="submit"
-            className="mt-6 rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
+            disabled={sending}
+            className="mt-6 rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
           >
-            Enviar avaliação
+            {sending ? "Enviando..." : "Enviar avaliação"}
           </button>
         </form>
+        )}
       </div>
     </article>
   );
 }
 
-function AcervoRow({ item }: { item: (typeof acervo)[number] }) {
+function AcervoRow({
+  item,
+  dbReviews,
+}: {
+  item: (typeof acervo)[number];
+  dbReviews: DbReview[];
+}) {
   const [open, setOpen] = useState(false);
+
+  const reviews: Review[] = [
+    ...item.reviews,
+    ...dbReviews
+      .filter((r) => r.movie_id === item.id)
+      .map((r) => ({
+        ...(r.name ? { name: r.name } : {}),
+        rating: Number(r.rating),
+        ...(r.comment ? { comment: r.comment } : {}),
+        date: formatReviewDate(r.created_at),
+      })),
+  ];
+
+  const hasDbReviews = dbReviews.some((r) => r.movie_id === item.id);
+  const rating =
+    item.rating !== null && !hasDbReviews
+      ? item.rating
+      : reviews.length === 0
+        ? null
+        : reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+
 
   return (
     <div className="border-b border-border">
@@ -255,10 +333,10 @@ function AcervoRow({ item }: { item: (typeof acervo)[number] }) {
           <p className="mt-1 text-[13px] text-muted-foreground">{item.date}</p>
         </div>
         <div className="flex shrink-0 items-center gap-3">
-          {item.rating !== null && (
+          {rating !== null && (
             <>
-              <StarsDisplay value={item.rating} />
-              <span className="text-sm text-foreground/90">{item.rating.toFixed(1)}</span>
+              <StarsDisplay value={rating} />
+              <span className="text-sm text-foreground/90">{rating.toFixed(1)}</span>
             </>
           )}
           <ChevronDown
@@ -269,7 +347,7 @@ function AcervoRow({ item }: { item: (typeof acervo)[number] }) {
 
       {open && (
         <div className="pb-6">
-          {item.reviews.length === 0 ? (
+          {reviews.length === 0 ? (
             <p className="pb-2 text-[13px] text-muted-foreground">
               Nenhuma avaliação ainda.
             </p>
@@ -278,13 +356,13 @@ function AcervoRow({ item }: { item: (typeof acervo)[number] }) {
               <div className="rounded-md bg-secondary/50 px-4 py-3">
                 <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
                   <span className="text-[13px] text-muted-foreground">
-                    {item.reviews.length} {item.reviews.length === 1 ? "voto" : "votos"}
+                    {reviews.length} {reviews.length === 1 ? "voto" : "votos"}
                   </span>
                   {[5, 4, 3, 2, 1].map((n) => {
-                    const count = item.reviews.filter(
+                    const count = reviews.filter(
                       (r) => Math.round(r.rating) === n,
                     ).length;
-                    const pct = (count / item.reviews.length) * 100;
+                    const pct = (count / reviews.length) * 100;
                     return (
                       <div key={n} className="flex items-center gap-2">
                         <span className="text-[13px] text-muted-foreground">{n}</span>
@@ -303,7 +381,7 @@ function AcervoRow({ item }: { item: (typeof acervo)[number] }) {
               </div>
 
               <ul className="mt-4 space-y-4">
-                {item.reviews
+                {reviews
                   .filter((r) => r.name?.trim() || r.comment?.trim())
                   .map((r, i) => {
                     const name = r.name?.trim() || "Anônimo";
@@ -340,6 +418,8 @@ function AcervoRow({ item }: { item: (typeof acervo)[number] }) {
 }
 
 function Index() {
+  const { data: dbReviews = [] } = useReviews();
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border">
@@ -397,7 +477,7 @@ function Index() {
 
           <div className="mt-6 space-y-12">
             {sessions.map((s) => (
-              <SessionCard key={s.id} session={s} />
+              <SessionCard key={s.id} session={s} reviews={dbReviews} />
             ))}
           </div>
         </section>
@@ -418,7 +498,7 @@ function Index() {
 
           <div className="mt-2">
             {acervo.map((item) => (
-              <AcervoRow key={item.title + item.date} item={item} />
+              <AcervoRow key={item.title + item.date} item={item} dbReviews={dbReviews} />
             ))}
           </div>
         </section>
