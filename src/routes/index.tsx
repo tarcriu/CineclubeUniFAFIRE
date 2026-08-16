@@ -76,6 +76,7 @@ const acervo = [
     reviews: [] as Review[],
   },
   {
+    id: "homem-com-h",
     title: "Homem com H",
     credits: "Esmir Filho · 2025",
     date: "27 de maio de 2026",
@@ -107,6 +108,7 @@ const acervo = [
     ] as Review[],
   },
   {
+    id: "ira-anjo",
     title: "A Ira de um Anjo",
     credits: "Larry Peerce · 1992",
     date: "13 de maio de 2026",
@@ -122,6 +124,7 @@ const acervo = [
     ] as Review[],
   },
   {
+    id: "lorax",
     title: "Lorax: Em Busca da Trúfula Perdida",
     credits: "Chris Renaud · 2012",
     date: "22 de abril de 2026",
@@ -137,6 +140,7 @@ const acervo = [
     ] as Review[],
   },
   {
+    id: "nao-se-preocupe",
     title: "Não Se Preocupe, Querida",
     credits: "Olivia Wilde · 2022",
     date: "23 de março de 2026",
