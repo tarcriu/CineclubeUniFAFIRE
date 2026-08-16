@@ -267,13 +267,17 @@ function SessionCard({
             </div>
           </div>
 
+          {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
+
           <button
             type="submit"
-            className="mt-6 rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
+            disabled={sending}
+            className="mt-6 rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
           >
-            Enviar avaliação
+            {sending ? "Enviando..." : "Enviar avaliação"}
           </button>
         </form>
+        )}
       </div>
     </article>
   );
