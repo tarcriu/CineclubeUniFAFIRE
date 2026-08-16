@@ -60,6 +60,7 @@ type Review = { name?: string; rating: number; comment?: string; date: string };
 
 const acervo = [
   {
+    id: "whiplash",
     title: "Whiplash",
     credits: "Damien Chazelle · 2014",
     date: "26 de agosto de 2026",
@@ -67,6 +68,7 @@ const acervo = [
     reviews: [] as Review[],
   },
   {
+    id: "poetas",
     title: "Sociedade dos Poetas Mortos",
     credits: "Peter Weir · 1989",
     date: "26 de agosto de 2026",
