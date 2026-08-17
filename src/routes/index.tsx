@@ -61,91 +61,36 @@ const acervo = [
     reviews: [] as Review[],
   },
   {
-    id: "poetas",
-    title: "Sociedade dos Poetas Mortos",
-    credits: "Peter Weir · 1989",
-    date: "26 de agosto de 2026",
-    rating: null as number | null,
-    reviews: [] as Review[],
-  },
-  {
     id: "homem-com-h",
     title: "Homem com H",
     credits: "Esmir Filho · 2025",
     date: "27 de maio de 2026",
-    rating: 4.2,
-    reviews: [
-      {
-        name: "Valentina Cruz",
-        rating: 5,
-        comment:
-          "As sequências em câmera lenta e o Nat King Cole na trilha — fui completamente tomada. Um filme que vou carregar por anos.",
-        date: "11 jul 2026",
-      },
-      {
-        name: "Diego Ríos",
-        rating: 4,
-        comment:
-          "Lindo e deliberadamente contido. Quando você se rende ao ritmo, a saudade se torna insuportável no melhor sentido.",
-        date: "11 jul 2026",
-      },
-      {
-        name: "Priya Menon",
-        rating: 4,
-        comment:
-          "Cada quadro poderia estar numa galeria. Os qipaos da Maggie Cheung sozinhos mereceriam uma exposição separada.",
-        date: "13 jul 2026",
-      },
-      { rating: 4, date: "14 jul 2026" },
-      { name: "Marcos Vilela", rating: 4, date: "15 jul 2026" },
-    ] as Review[],
+    rating: null as number | null,
+    reviews: [] as Review[],
   },
   {
     id: "ira-anjo",
     title: "A Ira de um Anjo",
     credits: "Larry Peerce · 1992",
     date: "13 de maio de 2026",
-    rating: 4.3,
-    reviews: [
-      {
-        name: "Ana Beatriz",
-        rating: 4.5,
-        comment: "Difícil de assistir, impossível de esquecer.",
-        date: "20 mai 2026",
-      },
-      { rating: 4, date: "21 mai 2026" },
-    ] as Review[],
+    rating: null as number | null,
+    reviews: [] as Review[],
   },
   {
     id: "lorax",
     title: "Lorax: Em Busca da Trúfula Perdida",
     credits: "Chris Renaud · 2012",
     date: "22 de abril de 2026",
-    rating: 3.7,
-    reviews: [
-      {
-        name: "Rafael Lima",
-        rating: 3.5,
-        comment: "Simpático e colorido, mas a mensagem fica no raso.",
-        date: "28 abr 2026",
-      },
-      { name: "Júlia Prado", rating: 4, date: "29 abr 2026" },
-    ] as Review[],
+    rating: null as number | null,
+    reviews: [] as Review[],
   },
   {
     id: "nao-se-preocupe",
     title: "Não Se Preocupe, Querida",
     credits: "Olivia Wilde · 2022",
     date: "23 de março de 2026",
-    rating: 4.7,
-    reviews: [
-      {
-        rating: 5,
-        comment: "A direção de arte carrega o filme inteiro nas costas.",
-        date: "30 mar 2026",
-      },
-      { name: "Camila Souza", rating: 4.5, date: "31 mar 2026" },
-    ] as Review[],
+    rating: null as number | null,
+    reviews: [] as Review[],
   },
 ];
 
