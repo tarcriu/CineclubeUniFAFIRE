@@ -47,15 +47,6 @@ const sessions = [
     synopsis:
       "Andrew Neiman é um jovem baterista obcecado em se tornar um dos maiores músicos de sua geração. Ao ingressar no prestigioso Conservatório Shaffer, em Nova York, ele passa a ser orientado pelo temido maestro Terence Fletcher — um homem capaz de qualquer crueldade em nome da excelência.",
   },
-  {
-    id: "poetas",
-    img: poetasAsset.url,
-    date: "26 DE AGOSTO DE 2026",
-    title: "Sociedade dos Poetas Mortos",
-    credits: "Peter Weir · 1989",
-    synopsis:
-      "Em 1959 na Welton Academy, uma tradicional escola preparatória, um ex-aluno se torna o novo professor de literatura. Seus métodos incomuns — incentivando os alunos a pensarem por si mesmos e a abraçarem a poesia como forma de vida — entram em choque com a rígida direção do colégio e com as expectativas das famílias.",
-  },
 ];
 
 type Review = { name?: string; rating: number; comment?: string; date: string };
