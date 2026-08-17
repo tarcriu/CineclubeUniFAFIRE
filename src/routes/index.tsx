@@ -13,7 +13,7 @@ import {
 } from "@/lib/reviews";
 
 import whiplashAsset from "@/assets/whiplash.jpg.asset.json";
-import poetasAsset from "@/assets/poetas.jpg.asset.json";
+
 
 import cineclubeLogo from "@/assets/cineclube-logo.png.asset.json";
 import unifafireLogo from "@/assets/unifafire.png.asset.json";
@@ -47,15 +47,6 @@ const sessions = [
     synopsis:
       "Andrew Neiman é um jovem baterista obcecado em se tornar um dos maiores músicos de sua geração. Ao ingressar no prestigioso Conservatório Shaffer, em Nova York, ele passa a ser orientado pelo temido maestro Terence Fletcher — um homem capaz de qualquer crueldade em nome da excelência.",
   },
-  {
-    id: "poetas",
-    img: poetasAsset.url,
-    date: "26 DE AGOSTO DE 2026",
-    title: "Sociedade dos Poetas Mortos",
-    credits: "Peter Weir · 1989",
-    synopsis:
-      "Em 1959 na Welton Academy, uma tradicional escola preparatória, um ex-aluno se torna o novo professor de literatura. Seus métodos incomuns — incentivando os alunos a pensarem por si mesmos e a abraçarem a poesia como forma de vida — entram em choque com a rígida direção do colégio e com as expectativas das famílias.",
-  },
 ];
 
 type Review = { name?: string; rating: number; comment?: string; date: string };
@@ -70,91 +61,36 @@ const acervo = [
     reviews: [] as Review[],
   },
   {
-    id: "poetas",
-    title: "Sociedade dos Poetas Mortos",
-    credits: "Peter Weir · 1989",
-    date: "26 de agosto de 2026",
-    rating: null as number | null,
-    reviews: [] as Review[],
-  },
-  {
     id: "homem-com-h",
     title: "Homem com H",
     credits: "Esmir Filho · 2025",
     date: "27 de maio de 2026",
-    rating: 4.2,
-    reviews: [
-      {
-        name: "Valentina Cruz",
-        rating: 5,
-        comment:
-          "As sequências em câmera lenta e o Nat King Cole na trilha — fui completamente tomada. Um filme que vou carregar por anos.",
-        date: "11 jul 2026",
-      },
-      {
-        name: "Diego Ríos",
-        rating: 4,
-        comment:
-          "Lindo e deliberadamente contido. Quando você se rende ao ritmo, a saudade se torna insuportável no melhor sentido.",
-        date: "11 jul 2026",
-      },
-      {
-        name: "Priya Menon",
-        rating: 4,
-        comment:
-          "Cada quadro poderia estar numa galeria. Os qipaos da Maggie Cheung sozinhos mereceriam uma exposição separada.",
-        date: "13 jul 2026",
-      },
-      { rating: 4, date: "14 jul 2026" },
-      { name: "Marcos Vilela", rating: 4, date: "15 jul 2026" },
-    ] as Review[],
+    rating: null as number | null,
+    reviews: [] as Review[],
   },
   {
     id: "ira-anjo",
     title: "A Ira de um Anjo",
     credits: "Larry Peerce · 1992",
     date: "13 de maio de 2026",
-    rating: 4.3,
-    reviews: [
-      {
-        name: "Ana Beatriz",
-        rating: 4.5,
-        comment: "Difícil de assistir, impossível de esquecer.",
-        date: "20 mai 2026",
-      },
-      { rating: 4, date: "21 mai 2026" },
-    ] as Review[],
+    rating: null as number | null,
+    reviews: [] as Review[],
   },
   {
     id: "lorax",
     title: "Lorax: Em Busca da Trúfula Perdida",
     credits: "Chris Renaud · 2012",
     date: "22 de abril de 2026",
-    rating: 3.7,
-    reviews: [
-      {
-        name: "Rafael Lima",
-        rating: 3.5,
-        comment: "Simpático e colorido, mas a mensagem fica no raso.",
-        date: "28 abr 2026",
-      },
-      { name: "Júlia Prado", rating: 4, date: "29 abr 2026" },
-    ] as Review[],
+    rating: null as number | null,
+    reviews: [] as Review[],
   },
   {
     id: "nao-se-preocupe",
     title: "Não Se Preocupe, Querida",
     credits: "Olivia Wilde · 2022",
     date: "23 de março de 2026",
-    rating: 4.7,
-    reviews: [
-      {
-        rating: 5,
-        comment: "A direção de arte carrega o filme inteiro nas costas.",
-        date: "30 mar 2026",
-      },
-      { name: "Camila Souza", rating: 4.5, date: "31 mar 2026" },
-    ] as Review[],
+    rating: null as number | null,
+    reviews: [] as Review[],
   },
 ];
 
@@ -545,7 +481,7 @@ function Index() {
       </main>
 
       <footer className="border-t border-border">
-        <div className="mx-auto flex max-w-[832px] items-center justify-center px-4 py-8">
+        <div className="mx-auto flex max-w-[832px] flex-col items-center justify-center gap-4 px-4 py-8">
           <a
             href="https://www.instagram.com/cineclube.unifafire/"
             target="_blank"
@@ -556,6 +492,10 @@ function Index() {
             <img src={instagramGreen.url} alt="Instagram" className="logo-light h-7 w-7" />
             <span>@cineclube.unifafire</span>
           </a>
+          <div className="text-center text-[13px] text-muted-foreground">
+            <p>Desde agosto de 2026</p>
+            <p className="mt-1">Versão 1.0</p>
+          </div>
         </div>
       </footer>
     </div>
