@@ -481,7 +481,7 @@ function Index() {
       </main>
 
       <footer className="border-t border-border">
-        <div className="mx-auto flex max-w-[832px] items-center justify-center px-4 py-8">
+        <div className="mx-auto flex max-w-[832px] flex-col items-center justify-center gap-4 px-4 py-8">
           <a
             href="https://www.instagram.com/cineclube.unifafire/"
             target="_blank"
