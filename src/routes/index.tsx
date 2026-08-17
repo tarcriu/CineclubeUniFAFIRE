@@ -19,6 +19,8 @@ import cineclubeLogo from "@/assets/cineclube-logo.png.asset.json";
 import unifafireLogo from "@/assets/unifafire.png.asset.json";
 import cineclubeLogoGreen from "@/assets/cineclube-logo-green.png.asset.json";
 import unifafireLogoGreen from "@/assets/unifafire-green.png.asset.json";
+import instagramGray from "@/assets/instagram-gray.png.asset.json";
+import instagramGreen from "@/assets/instagram-green.png.asset.json";
 
 
 export const Route = createFileRoute("/")({
@@ -217,7 +219,7 @@ function SessionCard({
       </div>
 
       <div className="p-6">
-        <p className="max-w-[600px] text-[15px] leading-relaxed text-foreground/85">
+        <p className="w-full text-justify text-[15px] leading-relaxed text-foreground/85">
           {session.synopsis}
         </p>
 
