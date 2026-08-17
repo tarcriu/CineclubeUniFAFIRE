@@ -354,29 +354,31 @@ function AcervoRow({
           ) : (
             <>
               <div className="rounded-md bg-secondary/50 px-4 py-3">
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+                <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-2">
                   <span className="text-[13px] text-muted-foreground">
                     {reviews.length} {reviews.length === 1 ? "voto" : "votos"}
                   </span>
-                  {[5, 4, 3, 2, 1].map((n) => {
-                    const count = reviews.filter(
-                      (r) => Math.round(r.rating) === n,
-                    ).length;
-                    const pct = (count / reviews.length) * 100;
-                    return (
-                      <div key={n} className="flex items-center gap-2">
-                        <span className="text-[13px] text-muted-foreground">{n}</span>
-                        <StarsDisplay value={1} size={11} />
-                        <span className="h-[6px] w-[110px] overflow-hidden rounded-full bg-muted-foreground/20">
-                          <span
-                            className="block h-full rounded-full bg-primary"
-                            style={{ width: `${pct}%` }}
-                          />
-                        </span>
-                        <span className="text-[13px] text-muted-foreground">{count}</span>
-                      </div>
-                    );
-                  })}
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+                    {[5, 4, 3, 2, 1].map((n) => {
+                      const count = reviews.filter(
+                        (r) => Math.round(r.rating) === n,
+                      ).length;
+                      const pct = (count / reviews.length) * 100;
+                      return (
+                        <div key={n} className="flex items-center gap-2">
+                          <span className="text-[13px] text-muted-foreground">{n}</span>
+                          <StarsDisplay value={1} size={11} />
+                          <span className="h-[6px] w-[110px] overflow-hidden rounded-full bg-muted-foreground/20">
+                            <span
+                              className="block h-full rounded-full bg-primary"
+                              style={{ width: `${pct}%` }}
+                            />
+                          </span>
+                          <span className="text-[13px] text-muted-foreground">{count}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 
