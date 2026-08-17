@@ -19,6 +19,8 @@ import cineclubeLogo from "@/assets/cineclube-logo.png.asset.json";
 import unifafireLogo from "@/assets/unifafire.png.asset.json";
 import cineclubeLogoGreen from "@/assets/cineclube-logo-green.png.asset.json";
 import unifafireLogoGreen from "@/assets/unifafire-green.png.asset.json";
+import instagramGray from "@/assets/instagram-gray.png.asset.json";
+import instagramGreen from "@/assets/instagram-green.png.asset.json";
 
 
 export const Route = createFileRoute("/")({
@@ -217,7 +219,7 @@ function SessionCard({
       </div>
 
       <div className="p-6">
-        <p className="max-w-[600px] text-[15px] leading-relaxed text-foreground/85">
+        <p className="w-full text-justify text-[15px] leading-relaxed text-foreground/85">
           {session.synopsis}
         </p>
 
@@ -541,6 +543,21 @@ function Index() {
           })}
         </section>
       </main>
+
+      <footer className="border-t border-border">
+        <div className="mx-auto flex max-w-[832px] items-center justify-center px-4 py-8">
+          <a
+            href="https://www.instagram.com/cineclube.unifafire/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 text-sm text-muted-foreground transition-opacity hover:opacity-80"
+          >
+            <img src={instagramGray.url} alt="Instagram" className="logo-dark h-7 w-7" />
+            <img src={instagramGreen.url} alt="Instagram" className="logo-light h-7 w-7" />
+            <span>@cineclube.unifafire</span>
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }
