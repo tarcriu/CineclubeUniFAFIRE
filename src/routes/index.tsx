@@ -511,16 +511,32 @@ function Index() {
             Clique num título para ver notas e comentários.
           </p>
 
-          <div className="mt-8 flex items-center gap-4">
-            <h3 className="font-display text-lg italic text-primary">2026</h3>
-            <span className="h-px flex-1 bg-border" />
-          </div>
+          {Object.entries(acervoByYear).map(([year, items]) => {
+            const open = openYears.has(year);
+            return (
+              <div key={year}>
+                <button
+                  type="button"
+                  onClick={() => toggleYear(year)}
+                  className="mt-8 flex w-full items-center gap-4"
+                >
+                  <h3 className="font-display text-lg italic text-primary">{year}</h3>
+                  <span className="h-px flex-1 bg-border" />
+                  <ChevronDown
+                    className={`h-4 w-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+                  />
+                </button>
 
-          <div className="mt-2">
-            {acervo.map((item) => (
-              <AcervoRow key={item.title + item.date} item={item} dbReviews={dbReviews} />
-            ))}
-          </div>
+                {open && (
+                  <div className="mt-2">
+                    {items.map((item) => (
+                      <AcervoRow key={item.title + item.date} item={item} dbReviews={dbReviews} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </section>
       </main>
     </div>
