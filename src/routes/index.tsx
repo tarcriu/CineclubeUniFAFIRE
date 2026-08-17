@@ -492,6 +492,10 @@ function Index() {
             <img src={instagramGreen.url} alt="Instagram" className="logo-light h-7 w-7" />
             <span>@cineclube.unifafire</span>
           </a>
+          <div className="text-center text-[13px] text-muted-foreground">
+            <p>Desde agosto de 2026</p>
+            <p className="mt-1">Versão 1.0</p>
+          </div>
         </div>
       </footer>
     </div>
