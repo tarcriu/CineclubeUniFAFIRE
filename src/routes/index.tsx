@@ -419,6 +419,26 @@ function AcervoRow({
 
 function Index() {
   const { data: dbReviews = [] } = useReviews();
+  const [openYears, setOpenYears] = useState<Set<string>>(new Set());
+
+  const acervoByYear = useMemo(() => {
+    const groups: Record<string, typeof acervo> = {};
+    for (const item of acervo) {
+      const year = item.date.split(" de ").pop() ?? "";
+      if (!groups[year]) groups[year] = [];
+      groups[year].push(item);
+    }
+    return groups;
+  }, []);
+
+  function toggleYear(year: string) {
+    setOpenYears((prev) => {
+      const next = new Set(prev);
+      if (next.has(year)) next.delete(year);
+      else next.add(year);
+      return next;
+    });
+  }
 
   return (
     <div className="min-h-screen bg-background">
