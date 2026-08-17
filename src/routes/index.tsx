@@ -13,7 +13,7 @@ import {
 } from "@/lib/reviews";
 
 import whiplashAsset from "@/assets/whiplash.jpg.asset.json";
-import poetasAsset from "@/assets/poetas.jpg.asset.json";
+
 
 import cineclubeLogo from "@/assets/cineclube-logo.png.asset.json";
 import unifafireLogo from "@/assets/unifafire.png.asset.json";
