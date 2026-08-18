@@ -4,7 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 export type DbReview = {
   id: string;
   movie_id: string;
-  device_id: string;
   rating: number;
   name: string | null;
   comment: string | null;
@@ -27,15 +26,31 @@ export function useReviews() {
   return useQuery({
     queryKey: ["reviews"],
     queryFn: async (): Promise<DbReview[]> => {
-      const { data, error } = await supabase
-        .from("reviews")
-        .select("*")
+      const { data, error } = await (supabase as any)
+        .from("reviews_public")
+        .select("id,movie_id,rating,name,comment,created_at")
         .order("created_at", { ascending: true });
       if (error) throw error;
       return (data ?? []) as DbReview[];
     },
   });
 }
+
+export function useHasReviewed(movieId: string, deviceId: string) {
+  return useQuery({
+    queryKey: ["has-reviewed", movieId, deviceId],
+    enabled: Boolean(deviceId),
+    queryFn: async (): Promise<boolean> => {
+      const { data, error } = await (supabase as any).rpc("has_reviewed", {
+        _movie_id: movieId,
+        _device_id: deviceId,
+      });
+      if (error) throw error;
+      return Boolean(data);
+    },
+  });
+}
+
 
 export async function submitReview(input: {
   movieId: string;
