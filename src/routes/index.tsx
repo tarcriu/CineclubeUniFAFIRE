@@ -136,6 +136,8 @@ function SessionCard({
     setName("");
     setComment("");
     await queryClient.invalidateQueries({ queryKey: ["reviews"] });
+    await queryClient.invalidateQueries({ queryKey: ["has-reviewed", session.id, deviceId] });
+
   }
 
 
