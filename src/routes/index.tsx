@@ -377,6 +377,18 @@ function AcervoRow({
 function Index() {
   const { data: dbReviews = [] } = useReviews();
   const [openYears, setOpenYears] = useState<Set<string>>(new Set());
+  const [frutigerAero, setFrutigerAero] = useState(false);
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem("frutiger-aero");
+    setFrutigerAero(stored === "true");
+  }, []);
+
+  const toggleFrutigerAero = () => {
+    const next = !frutigerAero;
+    setFrutigerAero(next);
+    window.localStorage.setItem("frutiger-aero", String(next));
+  };
 
   const acervoByYear = useMemo(() => {
     const groups: Record<string, typeof acervo> = {};
@@ -397,6 +409,10 @@ function Index() {
     });
   }
 
+  const unifafireLogoStyle = frutigerAero
+    ? { filter: "brightness(0) invert(1)" }
+    : undefined;
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border">
@@ -413,16 +429,25 @@ function Index() {
               className="logo-light h-24 w-auto"
             />
             <span className="h-10 w-px bg-border" />
-            <img
-              src={unifafireLogo.url}
-              alt="UniFAFIRE"
-              className="logo-dark h-8 w-auto opacity-75 sm:h-12"
-            />
-            <img
-              src={unifafireLogoGreen.url}
-              alt="UniFAFIRE"
-              className="logo-light h-8 w-auto sm:h-12"
-            />
+            <button
+              type="button"
+              onClick={toggleFrutigerAero}
+              aria-label="Alternar modo Frutiger Aero"
+              className="cursor-pointer bg-transparent p-0"
+            >
+              <img
+                src={unifafireLogo.url}
+                alt="UniFAFIRE"
+                className="logo-dark h-8 w-auto opacity-75 sm:h-12"
+                style={unifafireLogoStyle}
+              />
+              <img
+                src={unifafireLogoGreen.url}
+                alt="UniFAFIRE"
+                className="logo-light h-8 w-auto sm:h-12"
+                style={unifafireLogoStyle}
+              />
+            </button>
           </div>
 
           <div className="flex items-center gap-4">
