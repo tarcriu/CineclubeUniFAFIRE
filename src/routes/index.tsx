@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Star } from "lucide-react";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
@@ -310,7 +310,19 @@ function AcervoRow({
                       return (
                         <div key={n} className="flex items-center gap-2">
                           <span className="text-[13px] text-muted-foreground">{n}</span>
-                          <StarsDisplay value={1} size={11} />
+                          <div className="flex gap-[2px]">
+                            {[1, 2, 3, 4, 5].map((s) => (
+                              <Star
+                                key={s}
+                                style={{ width: 11, height: 11 }}
+                                className={
+                                  s <= n
+                                    ? "fill-primary text-transparent"
+                                    : "fill-muted-foreground/25 text-transparent"
+                                }
+                              />
+                            ))}
+                          </div>
                           <span className="h-[6px] w-[110px] overflow-hidden rounded-full bg-muted-foreground/20">
                             <span
                               className="block h-full rounded-full bg-primary"
@@ -497,10 +509,6 @@ function Index() {
             <img src={instagramGreen.url} alt="Instagram" className="logo-light h-7 w-7" />
             <span>@cineclube.unifafire</span>
           </a>
-          <div className="text-center text-[13px] text-muted-foreground">
-            <p>Desde agosto de 2026</p>
-            <p className="mt-1">Versão 1.0</p>
-          </div>
         </div>
       </footer>
     </div>
