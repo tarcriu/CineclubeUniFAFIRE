@@ -384,6 +384,10 @@ function Index() {
     setFrutigerAero(stored === "true");
   }, []);
 
+  useEffect(() => {
+    document.documentElement.classList.toggle("frutiger-aero", frutigerAero);
+  }, [frutigerAero]);
+
   const toggleFrutigerAero = () => {
     const next = !frutigerAero;
     setFrutigerAero(next);
