@@ -332,7 +332,7 @@ function AcervoRow({
                           <span className="text-[13px] text-muted-foreground">{count}</span>
                         </div>
                       );
-                    })
+                    })}
                   </div>
                 </div>
               </div>
