@@ -8,9 +8,11 @@ import {
   formatReviewDate,
   getDeviceId,
   submitReview,
+  useHasReviewed,
   useReviews,
   type DbReview,
 } from "@/lib/reviews";
+
 
 import whiplashAsset from "@/assets/whiplash.jpg.asset.json";
 
@@ -112,8 +114,9 @@ function SessionCard({
 
   useEffect(() => setDeviceId(getDeviceId()), []);
 
-  const mine = reviews.find((r) => r.movie_id === session.id && r.device_id === deviceId);
-  const done = Boolean(mine);
+  const { data: hasReviewed } = useHasReviewed(session.id, deviceId);
+  const done = Boolean(hasReviewed);
+
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -133,6 +136,8 @@ function SessionCard({
     setName("");
     setComment("");
     await queryClient.invalidateQueries({ queryKey: ["reviews"] });
+    await queryClient.invalidateQueries({ queryKey: ["has-reviewed", session.id, deviceId] });
+
   }
 
 

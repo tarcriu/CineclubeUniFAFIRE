@@ -46,10 +46,39 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      reviews_public: {
+        Row: {
+          comment: string | null
+          created_at: string | null
+          id: string | null
+          movie_id: string | null
+          name: string | null
+          rating: number | null
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string | null
+          id?: string | null
+          movie_id?: string | null
+          name?: string | null
+          rating?: number | null
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string | null
+          id?: string | null
+          movie_id?: string | null
+          name?: string | null
+          rating?: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      has_reviewed: {
+        Args: { _device_id: string; _movie_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
