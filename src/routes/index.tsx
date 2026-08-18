@@ -44,7 +44,7 @@ const sessions = [
     id: "whiplash",
     img: whiplashAsset.url,
     date: "26 DE AGOSTO DE 2026",
-    title: "Whiplash",
+    title: "Whiplash - Em Busca da Perfeição",
     credits: "Damien Chazelle · 2014",
     synopsis:
       "Andrew Neiman é um jovem baterista obcecado em se tornar um dos maiores músicos de sua geração. Ao ingressar no prestigioso Conservatório Shaffer, em Nova York, ele passa a ser orientado pelo temido maestro Terence Fletcher — um homem capaz de qualquer crueldade em nome da excelência.",
@@ -56,7 +56,7 @@ type Review = { name?: string; rating: number; comment?: string; date: string };
 const acervo = [
   {
     id: "whiplash",
-    title: "Whiplash",
+    title: "Whiplash - Em Busca da Perfeição",
     credits: "Damien Chazelle · 2014",
     date: "26 de agosto de 2026",
     rating: null as number | null,
