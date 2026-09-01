@@ -226,6 +226,120 @@ function SessionCard({
   );
 }
 
+function RateDialog({
+  movieId,
+  title,
+  onClose,
+}: {
+  movieId: string;
+  title: string;
+  onClose: () => void;
+}) {
+  const queryClient = useQueryClient();
+  const [rating, setRating] = useState(0);
+  const [name, setName] = useState("");
+  const [comment, setComment] = useState("");
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    if (rating <= 0) {
+      setError("Escolha uma nota.");
+      return;
+    }
+    setSending(true);
+    const result = await submitReview({ movieId, rating, name, comment });
+    setSending(false);
+    if (!result.ok) {
+      setError(result.message);
+      return;
+    }
+    await queryClient.invalidateQueries({ queryKey: ["reviews"] });
+    await queryClient.invalidateQueries({ queryKey: ["has-reviewed", movieId] });
+    onClose();
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4"
+      onClick={onClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        onClick={(e) => e.stopPropagation()}
+        className="max-h-[85vh] w-full max-w-[520px] overflow-y-auto rounded-lg border border-border bg-card p-6"
+      >
+        <div className="flex items-start justify-between gap-4">
+          <h4 className="font-display text-2xl italic">{title}</h4>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Fechar"
+            className="text-muted-foreground transition-opacity hover:opacity-70"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <form className="mt-5" onSubmit={handleSubmit}>
+          <p className="text-[11px] tracking-[0.12em] text-muted-foreground">
+            SUA NOTA <span className="text-primary">*</span>
+          </p>
+          <div className="mt-2">
+            <StarsInput value={rating} onChange={setRating} />
+          </div>
+
+          <div className="mt-4 grid gap-4">
+            <div>
+              <label
+                htmlFor={`acervo-nome-${movieId}`}
+                className="text-[11px] tracking-[0.12em] text-muted-foreground"
+              >
+                NOME <span className="text-muted-foreground/70">(OPCIONAL)</span>
+              </label>
+              <input
+                id={`acervo-nome-${movieId}`}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Seu nome"
+                className="mt-2 h-10 w-full rounded-md border border-border bg-secondary/60 px-3 text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus:border-primary/60"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor={`acervo-comentario-${movieId}`}
+                className="text-[11px] tracking-[0.12em] text-muted-foreground"
+              >
+                COMENTÁRIO <span className="text-muted-foreground/70">(OPCIONAL)</span>
+              </label>
+              <textarea
+                id={`acervo-comentario-${movieId}`}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="O que você achou?"
+                className="mt-2 h-[72px] w-full resize-none rounded-md border border-border bg-secondary/60 px-3 py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus:border-primary/60"
+              />
+            </div>
+          </div>
+
+          {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
+
+          <button
+            type="submit"
+            disabled={sending}
+            className="mt-6 w-full rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+          >
+            {sending ? "Enviando..." : "Enviar avaliação"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 function AcervoRow({
   item,
   dbReviews,
@@ -234,6 +348,11 @@ function AcervoRow({
   dbReviews: DbReview[];
 }) {
   const [open, setOpen] = useState(false);
+  const [rateOpen, setRateOpen] = useState(false);
+  const [deviceId, setDeviceId] = useState("");
+  useEffect(() => setDeviceId(getDeviceId()), []);
+  const { data: hasReviewed } = useHasReviewed(item.id, deviceId);
+
 
   const reviews: Review[] = [
     ...item.reviews,
