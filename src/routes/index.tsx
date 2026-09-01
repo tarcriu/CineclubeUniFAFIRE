@@ -680,6 +680,23 @@ function Index() {
             <img src={instagramGreen.url} alt="Instagram" className="logo-light h-7 w-7" />
             <span>@cineclube.unifafire</span>
           </a>
+          {isMember ? (
+            <button
+              type="button"
+              onClick={() => void signOutMember()}
+              className="text-[13px] text-muted-foreground underline-offset-4 transition-opacity hover:opacity-80 hover:underline"
+            >
+              Sair da conta do cineclube
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => void signInAsMember()}
+              className="text-[13px] text-muted-foreground underline-offset-4 transition-opacity hover:opacity-80 hover:underline"
+            >
+              Logar como membro do cineclube
+            </button>
+          )}
         </div>
       </footer>
     </div>
