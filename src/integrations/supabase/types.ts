@@ -79,7 +79,6 @@ export type Database = {
         Args: { _device_id: string; _movie_id: string }
         Returns: boolean
       }
-      is_cineclube_member: { Args: never; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
