@@ -485,7 +485,7 @@ function AcervoRow({
                   .map((r, i) => {
                     const name = r.name?.trim() || "Anônimo";
                     return (
-                      <li key={i} className="flex gap-3">
+                      <li key={r.id ?? i} className="flex gap-3">
                         <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-secondary text-[12px] text-muted-foreground">
                           {name.charAt(0).toUpperCase()}
                         </span>
@@ -496,6 +496,22 @@ function AcervoRow({
                             <span className="ml-auto text-[12px] text-muted-foreground">
                               {r.date}
                             </span>
+                            {isMember && r.id && (
+                              <button
+                                type="button"
+                                aria-label="Apagar comentário"
+                                disabled={deletingId === r.id}
+                                onClick={async () => {
+                                  setDeletingId(r.id!);
+                                  await deleteReview(r.id!);
+                                  await queryClient.invalidateQueries({ queryKey: ["reviews"] });
+                                  setDeletingId(null);
+                                }}
+                                className="text-muted-foreground transition-colors hover:text-destructive disabled:opacity-50"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            )}
                           </div>
                           {r.comment && (
                             <p className="mt-1 text-sm leading-relaxed text-foreground/80">
@@ -680,6 +696,23 @@ function Index() {
             <img src={instagramGreen.url} alt="Instagram" className="logo-light h-7 w-7" />
             <span>@cineclube.unifafire</span>
           </a>
+          {isMember ? (
+            <button
+              type="button"
+              onClick={() => void signOutMember()}
+              className="text-[13px] text-muted-foreground underline-offset-4 transition-opacity hover:opacity-80 hover:underline"
+            >
+              Sair da conta do cineclube
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => void signInAsMember()}
+              className="text-[13px] text-muted-foreground underline-offset-4 transition-opacity hover:opacity-80 hover:underline"
+            >
+              Logar como membro do cineclube
+            </button>
+          )}
         </div>
       </footer>
     </div>
