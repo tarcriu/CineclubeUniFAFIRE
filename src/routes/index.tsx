@@ -409,6 +409,30 @@ function AcervoRow({
 
       {open && (
         <div className="pb-6">
+          <div className="mb-4 flex items-center justify-between gap-4 rounded-md border border-border px-4 py-3">
+            <p className="text-[11px] tracking-[0.12em] text-muted-foreground">AVALIAR</p>
+            {hasReviewed ? (
+              <span className="text-[13px] text-muted-foreground">
+                Você já avaliou este filme neste aparelho.
+              </span>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setRateOpen(true)}
+                className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
+              >
+                Avaliar filme
+              </button>
+            )}
+          </div>
+          {rateOpen && (
+            <RateDialog
+              movieId={item.id}
+              title={item.title}
+              onClose={() => setRateOpen(false)}
+            />
+          )}
+
           {reviews.length === 0 ? (
             <p className="pb-2 text-[13px] text-muted-foreground">
               Nenhuma avaliação ainda.
