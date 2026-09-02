@@ -769,7 +769,7 @@ function Index() {
               onClick={() => void signOutMember()}
               className="text-[13px] text-muted-foreground underline-offset-4 transition-opacity hover:opacity-80 hover:underline"
             >
-              Sair da conta do cineclube
+              Logado como cineclube@unifafire.edu.br
             </button>
           ) : (
             <button
