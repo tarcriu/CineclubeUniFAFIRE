@@ -15,6 +15,7 @@ import {
 import { deleteReview, signInAsMember, signOutMember, useMember } from "@/lib/member";
 
 
+
 import whiplashAsset from "@/assets/whiplash.jpg.asset.json";
 
 
@@ -399,6 +400,34 @@ function MemberLoginDialog({ onClose }: { onClose: () => void }) {
   );
 }
 
+function AccessDeniedDialog({ onClose }: { onClose: () => void }) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4"
+      onClick={onClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-[420px] rounded-lg border border-border bg-card p-6 text-center"
+      >
+        <h4 className="font-display text-2xl italic">Acesso negado</h4>
+        <p className="mt-4 text-sm text-muted-foreground">
+          Seu acesso foi negado, você não está usando o e-mail do cineclube.
+        </p>
+        <button
+          type="button"
+          onClick={onClose}
+          className="mt-6 w-full rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
+        >
+          Entendi
+        </button>
+      </div>
+    </div>
+  );
+}
+
 
 function AcervoRow({
   item,
@@ -598,7 +627,7 @@ function AcervoRow({
 
 function Index() {
   const { data: dbReviews = [] } = useReviews();
-  const { isMember } = useMember();
+  const { isMember, denied, clearDenied } = useMember();
   const [openYears, setOpenYears] = useState<Set<string>>(new Set());
   const [frutigerAero, setFrutigerAero] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
@@ -783,7 +812,8 @@ function Index() {
         </div>
       </footer>
 
-      {loginOpen && <MemberLoginDialog onClose={() => setLoginOpen(false)} />}
+      {loginOpen && !denied && <MemberLoginDialog onClose={() => setLoginOpen(false)} />}
+      {denied && <AccessDeniedDialog onClose={clearDenied} />}
     </div>
 
   );

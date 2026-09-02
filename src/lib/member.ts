@@ -6,6 +6,7 @@ export const MEMBER_EMAIL = "cineclube@unifafire.edu.br";
 
 export function useMember() {
   const [email, setEmail] = useState<string | null>(null);
+  const [denied, setDenied] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -24,10 +25,15 @@ export function useMember() {
   const isMember = (email ?? "").toLowerCase() === MEMBER_EMAIL;
 
   useEffect(() => {
-    if (email && !isMember) void supabase.auth.signOut();
+    if (email && !isMember) {
+      setDenied(true);
+      void supabase.auth.signOut();
+    }
   }, [email, isMember]);
 
-  return { email, isMember };
+  const clearDenied = () => setDenied(false);
+
+  return { email, isMember, denied, clearDenied };
 
 }
 
