@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, Star, X } from "lucide-react";
+import { ChevronDown, Star, Trash2, X } from "lucide-react";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
@@ -12,6 +12,7 @@ import {
   useReviews,
   type DbReview,
 } from "@/lib/reviews";
+import { deleteReview, signInAsMember, signOutMember, useMember } from "@/lib/member";
 
 
 import whiplashAsset from "@/assets/whiplash.jpg.asset.json";
@@ -51,7 +52,7 @@ const sessions = [
   },
 ];
 
-type Review = { name?: string; rating: number; comment?: string; date: string };
+type Review = { id?: string; name?: string; rating: number; comment?: string; date: string };
 
 const acervo = [
   {
@@ -350,8 +351,11 @@ function AcervoRow({
   const [open, setOpen] = useState(false);
   const [rateOpen, setRateOpen] = useState(false);
   const [deviceId, setDeviceId] = useState("");
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   useEffect(() => setDeviceId(getDeviceId()), []);
   const { data: hasReviewed } = useHasReviewed(item.id, deviceId);
+  const { isMember } = useMember();
+  const queryClient = useQueryClient();
 
 
   const reviews: Review[] = [
@@ -359,6 +363,7 @@ function AcervoRow({
     ...dbReviews
       .filter((r) => r.movie_id === item.id)
       .map((r) => ({
+        id: r.id,
         ...(r.name ? { name: r.name } : {}),
         rating: Number(r.rating),
         ...(r.comment ? { comment: r.comment } : {}),
@@ -418,7 +423,7 @@ function AcervoRow({
               <button
                 type="button"
                 onClick={() => setRateOpen(true)}
-                className="text-sm font-medium text-primary underline-offset-4 transition-opacity hover:opacity-70 hover:underline"
+                className="rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
               >
                 Avaliar
               </button>
@@ -534,6 +539,7 @@ function AcervoRow({
 
 function Index() {
   const { data: dbReviews = [] } = useReviews();
+  const { isMember } = useMember();
   const [openYears, setOpenYears] = useState<Set<string>>(new Set());
   const [frutigerAero, setFrutigerAero] = useState(false);
 
