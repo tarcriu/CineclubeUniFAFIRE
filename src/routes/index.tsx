@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, Star, X } from "lucide-react";
+import { ChevronDown, Star, Trash2, X } from "lucide-react";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
@@ -12,6 +12,7 @@ import {
   useReviews,
   type DbReview,
 } from "@/lib/reviews";
+import { deleteReview, signInAsMember, signOutMember, useMember } from "@/lib/member";
 
 
 import whiplashAsset from "@/assets/whiplash.jpg.asset.json";
