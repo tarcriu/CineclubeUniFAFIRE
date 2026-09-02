@@ -22,7 +22,13 @@ export function useMember() {
   }, []);
 
   const isMember = (email ?? "").toLowerCase() === MEMBER_EMAIL;
+
+  useEffect(() => {
+    if (email && !isMember) void supabase.auth.signOut();
+  }, [email, isMember]);
+
   return { email, isMember };
+
 }
 
 export async function signInAsMember() {
