@@ -627,7 +627,7 @@ function AcervoRow({
 
 function Index() {
   const { data: dbReviews = [] } = useReviews();
-  const { isMember } = useMember();
+  const { isMember, denied, clearDenied } = useMember();
   const [openYears, setOpenYears] = useState<Set<string>>(new Set());
   const [frutigerAero, setFrutigerAero] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
