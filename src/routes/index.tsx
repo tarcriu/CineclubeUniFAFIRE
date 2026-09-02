@@ -812,7 +812,8 @@ function Index() {
         </div>
       </footer>
 
-      {loginOpen && <MemberLoginDialog onClose={() => setLoginOpen(false)} />}
+      {loginOpen && !denied && <MemberLoginDialog onClose={() => setLoginOpen(false)} />}
+      {denied && <AccessDeniedDialog onClose={clearDenied} />}
     </div>
 
   );
