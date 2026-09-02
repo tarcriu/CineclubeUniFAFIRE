@@ -782,6 +782,9 @@ function Index() {
           )}
         </div>
       </footer>
+
+      {loginOpen && <MemberLoginDialog onClose={() => setLoginOpen(false)} />}
     </div>
+
   );
 }
