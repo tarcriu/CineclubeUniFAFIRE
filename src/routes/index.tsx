@@ -772,7 +772,7 @@ function Index() {
           ) : (
             <button
               type="button"
-              onClick={() => void signInAsMember()}
+              onClick={() => setLoginOpen(true)}
               className="text-[13px] text-muted-foreground underline-offset-4 transition-opacity hover:opacity-80 hover:underline"
             >
               Logar como membro do cineclube
