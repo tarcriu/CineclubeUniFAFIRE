@@ -422,7 +422,7 @@ function AcervoRow({
               <button
                 type="button"
                 onClick={() => setRateOpen(true)}
-                className="text-sm font-medium text-primary underline-offset-4 transition-opacity hover:opacity-70 hover:underline"
+                className="rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
               >
                 Avaliar
               </button>
