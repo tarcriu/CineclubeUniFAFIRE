@@ -350,8 +350,11 @@ function AcervoRow({
   const [open, setOpen] = useState(false);
   const [rateOpen, setRateOpen] = useState(false);
   const [deviceId, setDeviceId] = useState("");
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   useEffect(() => setDeviceId(getDeviceId()), []);
   const { data: hasReviewed } = useHasReviewed(item.id, deviceId);
+  const { isMember } = useMember();
+  const queryClient = useQueryClient();
 
 
   const reviews: Review[] = [
@@ -359,6 +362,7 @@ function AcervoRow({
     ...dbReviews
       .filter((r) => r.movie_id === item.id)
       .map((r) => ({
+        id: r.id,
         ...(r.name ? { name: r.name } : {}),
         rating: Number(r.rating),
         ...(r.comment ? { comment: r.comment } : {}),
