@@ -22,14 +22,39 @@ export function useMember() {
   }, []);
 
   const isMember = (email ?? "").toLowerCase() === MEMBER_EMAIL;
+
+  useEffect(() => {
+    if (email && !isMember) void supabase.auth.signOut();
+  }, [email, isMember]);
+
   return { email, isMember };
+
 }
 
 export async function signInAsMember() {
-  await lovable.auth.signInWithOAuth("google", {
+  const result = await lovable.auth.signInWithOAuth("google", {
     redirect_uri: window.location.origin,
   });
+
+  if (result.error) {
+    return { ok: false as const, message: "Não foi possível entrar com o Google." };
+  }
+  if (result.redirected) {
+    return { ok: true as const, pending: true as const };
+  }
+
+  const { data } = await supabase.auth.getUser();
+  const email = (data.user?.email ?? "").toLowerCase();
+  if (email !== MEMBER_EMAIL) {
+    await supabase.auth.signOut();
+    return {
+      ok: false as const,
+      message: "Acesso negado. Use a conta cineclube@unifafire.edu.br.",
+    };
+  }
+  return { ok: true as const };
 }
+
 
 export async function signOutMember() {
   await supabase.auth.signOut();
