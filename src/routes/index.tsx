@@ -601,6 +601,8 @@ function Index() {
   const { isMember } = useMember();
   const [openYears, setOpenYears] = useState<Set<string>>(new Set());
   const [frutigerAero, setFrutigerAero] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+
 
   useEffect(() => {
     const stored = window.localStorage.getItem("frutiger-aero");
