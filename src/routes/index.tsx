@@ -341,6 +341,65 @@ function RateDialog({
   );
 }
 
+function MemberLoginDialog({ onClose }: { onClose: () => void }) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleLogin() {
+    setError("");
+    setLoading(true);
+    const result = await signInAsMember();
+    setLoading(false);
+    if (!result.ok) {
+      setError(result.message);
+      return;
+    }
+    onClose();
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4"
+      onClick={onClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-[420px] rounded-lg border border-border bg-card p-6"
+      >
+        <div className="flex items-start justify-between gap-4">
+          <h4 className="font-display text-2xl italic">Membro do cineclube</h4>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Fechar"
+            className="text-muted-foreground transition-opacity hover:opacity-70"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <p className="mt-4 text-sm text-muted-foreground">
+          Entre com a conta cineclube@unifafire.edu.br.
+        </p>
+
+        {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
+
+        <button
+          type="button"
+          disabled={loading}
+          onClick={() => void handleLogin()}
+          className="mt-6 w-full rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+        >
+          {loading ? "Entrando..." : "Entrar com o Google"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+
 function AcervoRow({
   item,
   dbReviews,
