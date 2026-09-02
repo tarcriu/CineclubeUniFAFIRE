@@ -52,7 +52,7 @@ const sessions = [
   },
 ];
 
-type Review = { name?: string; rating: number; comment?: string; date: string };
+type Review = { id?: string; name?: string; rating: number; comment?: string; date: string };
 
 const acervo = [
   {
