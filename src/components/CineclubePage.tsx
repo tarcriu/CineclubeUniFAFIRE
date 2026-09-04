@@ -521,6 +521,7 @@ function AddMovieDialog({ onClose }: { onClose: () => void }) {
 }
 
 function MemberLoginDialog({ onClose }: { onClose: () => void }) {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -534,7 +535,9 @@ function MemberLoginDialog({ onClose }: { onClose: () => void }) {
       return;
     }
     onClose();
+    void navigate({ to: "/logado" });
   }
+
 
   return (
     <div
