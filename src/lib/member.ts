@@ -39,8 +39,9 @@ export function useMember() {
 
 export async function signInAsMember() {
   const result = await lovable.auth.signInWithOAuth("google", {
-    redirect_uri: window.location.origin,
+    redirect_uri: `${window.location.origin}/logado`,
   });
+
 
   if (result.error) {
     return { ok: false as const, message: "Não foi possível entrar com o Google." };
