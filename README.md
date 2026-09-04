@@ -1,8 +1,8 @@
-SINCE IT WAS MADE WITH AI IT'S ONLY FAIR IT IS PUBLIC.
+# SINCE IT WAS MADE WITH AI IT'S ONLY FAIR IT IS PUBLIC.
 
 # Cineclube UniFAFIRE
 
-Made for my college's outreach project, in order to keep a record of our movies and the opinions of viewers
+Made for my college's outreach project, in order to keep a record of the movies we've shown and the opinions of the viewers on them
 
 This project was built with [Lovable](https://lovable.dev).
 
