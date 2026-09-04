@@ -20,10 +20,12 @@ import {
   formatMonthLabel,
   formatSessionDate,
   monthKey,
+  updateMovie,
   useMovies,
   yearOf,
   type Movie,
 } from "@/lib/movies";
+
 import { deleteReview, signInAsMember, signOutMember, useMember } from "@/lib/member";
 
 import cineclubeLogo from "@/assets/cineclube-logo.png.asset.json";
