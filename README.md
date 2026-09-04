@@ -1,6 +1,8 @@
+SINCE IT WAS MADE WITH AI IT'S ONLY FAIR IT IS PUBLIC.
+
 # Cineclube UniFAFIRE
 
-pode transformar esse link do figma em um website? https://www.figma.com/make/Ir97yuqr7fnbZlZZbFM6u7/Cineclube-UniFAFIRE?t=itDP9EorHl3lqYsU-1
+Made for my college's outreach project, in order to keep a record of our movies and the opinions of viewers
 
 This project was built with [Lovable](https://lovable.dev).
 
