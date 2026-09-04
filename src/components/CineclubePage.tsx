@@ -20,10 +20,12 @@ import {
   formatMonthLabel,
   formatSessionDate,
   monthKey,
+  updateMovie,
   useMovies,
   yearOf,
   type Movie,
 } from "@/lib/movies";
+
 import { deleteReview, signInAsMember, signOutMember, useMember } from "@/lib/member";
 
 import cineclubeLogo from "@/assets/cineclube-logo.png.asset.json";
@@ -34,6 +36,56 @@ import instagramGray from "@/assets/instagram-gray.png.asset.json";
 import instagramGreen from "@/assets/instagram-green.png.asset.json";
 
 type Review = { id?: string; name?: string; rating: number; comment?: string; date: string };
+
+function ConfirmDialog({
+  title,
+  message,
+  confirmLabel,
+  busy,
+  onConfirm,
+  onCancel,
+}: {
+  title: string;
+  message: string;
+  confirmLabel: string;
+  busy: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4"
+      onClick={onCancel}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-[420px] rounded-lg border border-border bg-card p-6"
+      >
+        <h4 className="font-display text-2xl italic">{title}</h4>
+        <p className="mt-3 text-sm leading-relaxed text-foreground/80">{message}</p>
+        <div className="mt-6 flex items-center justify-end gap-4">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="text-[13px] text-muted-foreground underline-offset-4 hover:underline"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            disabled={busy}
+            onClick={onConfirm}
+            className="rounded-md bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+          >
+            {busy ? "Excluindo..." : confirmLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function DeleteMovieButton({ movie }: { movie: Movie }) {
   const queryClient = useQueryClient();
@@ -48,41 +100,31 @@ function DeleteMovieButton({ movie }: { movie: Movie }) {
     setConfirming(false);
   }
 
-  if (confirming) {
-    return (
-      <div className="flex flex-wrap items-center gap-3">
-        <span className="text-[13px] text-muted-foreground">Excluir “{movie.title}”?</span>
-        <button
-          type="button"
-          disabled={busy}
-          onClick={() => void handleDelete()}
-          className="rounded-md bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
-        >
-          {busy ? "Excluindo..." : "Confirmar"}
-        </button>
-        <button
-          type="button"
-          onClick={() => setConfirming(false)}
-          className="text-[13px] text-muted-foreground underline-offset-4 hover:underline"
-        >
-          Cancelar
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <button
-      type="button"
-      onClick={() => setConfirming(true)}
-      className="rounded-md bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground transition-opacity hover:opacity-90"
-    >
-      Excluir filme
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={() => setConfirming(true)}
+        className="rounded-md bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground transition-opacity hover:opacity-90"
+      >
+        Excluir filme
+      </button>
+      {confirming && (
+        <ConfirmDialog
+          title="Excluir filme"
+          message={`Tem certeza que deseja excluir “${movie.title}”? Esta ação não pode ser desfeita.`}
+          confirmLabel="Excluir filme"
+          busy={busy}
+          onConfirm={() => void handleDelete()}
+          onCancel={() => setConfirming(false)}
+        />
+      )}
+    </>
   );
 }
 
 function SessionCard({ session, memberMode }: { session: Movie; memberMode: boolean }) {
+
   const queryClient = useQueryClient();
   const [rating, setRating] = useState(0);
   const [name, setName] = useState("");

@@ -134,3 +134,31 @@ export function fileToCompressedDataUrl(file: File): Promise<string> {
     reader.readAsDataURL(file);
   });
 }
+
+export async function updateMovie(
+  id: string,
+  input: {
+    title: string;
+    director: string;
+    year: number | null;
+    synopsis: string;
+    imageUrl: string;
+    sessionDate: string;
+  },
+) {
+  const { error } = await (supabase as any)
+    .from("movies")
+    .update({
+      title: input.title.trim(),
+      director: input.director.trim(),
+      year: input.year,
+      synopsis: input.synopsis.trim() || null,
+      image_url: input.imageUrl.trim() || null,
+      session_date: input.sessionDate,
+    })
+    .eq("id", id);
+  if (error) {
+    return { ok: false as const, message: "Não foi possível salvar as alterações." };
+  }
+  return { ok: true as const };
+}
