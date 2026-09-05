@@ -1062,7 +1062,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
         </div>
       </footer>
 
-      {addOpen && <AddMovieDialog onClose={() => setAddOpen(false)} />}
+      {addOpen && <MovieDialog onClose={() => setAddOpen(false)} />}
       {loginOpen && !denied && <MemberLoginDialog onClose={() => setLoginOpen(false)} />}
       {denied && <AccessDeniedDialog onClose={clearDenied} />}
     </div>
