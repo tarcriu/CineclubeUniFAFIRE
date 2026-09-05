@@ -786,7 +786,12 @@ function AcervoRow({
             )}
           </div>
           {rateOpen && (
-            <RateDialog movieId={item.id} title={item.title} onClose={() => setRateOpen(false)} />
+            <RateDialog
+              movieId={item.id}
+              title={item.title}
+              synopsis={item.synopsis}
+              onClose={() => setRateOpen(false)}
+            />
           )}
 
           {reviews.length === 0 ? (
