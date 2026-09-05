@@ -683,6 +683,17 @@ function AcervoRow({
   const [rateOpen, setRateOpen] = useState(false);
   const [deviceId, setDeviceId] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [confirmReview, setConfirmReview] = useState<{ id: string; name: string } | null>(null);
+
+  async function handleDeleteReview() {
+    if (!confirmReview) return;
+    setDeletingId(confirmReview.id);
+    await deleteReview(confirmReview.id);
+    await queryClient.invalidateQueries({ queryKey: ["reviews"] });
+    setDeletingId(null);
+    setConfirmReview(null);
+  }
+
   useEffect(() => setDeviceId(getDeviceId()), []);
   const { data: hasReviewed } = useHasReviewed(item.id, deviceId);
   const queryClient = useQueryClient();
