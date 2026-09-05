@@ -282,10 +282,12 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
 function RateDialog({
   movieId,
   title,
+  synopsis,
   onClose,
 }: {
   movieId: string;
   title: string;
+  synopsis?: string | null;
   onClose: () => void;
 }) {
   const queryClient = useQueryClient();
@@ -294,6 +296,7 @@ function RateDialog({
   const [comment, setComment] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
+  const [synopsisOpen, setSynopsisOpen] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -336,6 +339,26 @@ function RateDialog({
             <X className="h-5 w-5" />
           </button>
         </div>
+
+        {synopsis?.trim() && (
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={() => setSynopsisOpen(!synopsisOpen)}
+              className="flex items-center gap-2 text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <span>Sinopse</span>
+              <ChevronDown
+                className={`h-4 w-4 transition-transform ${synopsisOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+            {synopsisOpen && (
+              <p className="mt-2 text-justify text-[15px] leading-relaxed text-foreground/85">
+                {synopsis}
+              </p>
+            )}
+          </div>
+        )}
 
         <form className="mt-5" onSubmit={handleSubmit}>
           <p className="text-[11px] tracking-[0.12em] text-muted-foreground">
