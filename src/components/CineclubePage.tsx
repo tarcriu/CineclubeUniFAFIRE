@@ -859,9 +859,20 @@ function AcervoRow({
           )}
         </div>
       )}
+      {confirmReview && (
+        <ConfirmDialog
+          title="Apagar comentário"
+          message={`Tem certeza que deseja apagar a avaliação de ${confirmReview.name}? Esta ação não pode ser desfeita.`}
+          confirmLabel="Apagar"
+          busy={deletingId === confirmReview.id}
+          onConfirm={() => void handleDeleteReview()}
+          onCancel={() => setConfirmReview(null)}
+        />
+      )}
     </div>
   );
 }
+
 
 export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) {
   const navigate = useNavigate();
