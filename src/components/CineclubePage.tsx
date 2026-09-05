@@ -458,7 +458,10 @@ function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void })
         className="max-h-[85vh] w-full max-w-[560px] overflow-y-auto rounded-lg border border-border bg-card p-6"
       >
         <div className="flex items-start justify-between gap-4">
-          <h4 className="font-display text-2xl italic">Adicionar filme</h4>
+          <h4 className="font-display text-2xl italic">
+            {editing ? "Editar filme" : "Adicionar filme"}
+          </h4>
+
           <button
             type="button"
             onClick={onClose}
