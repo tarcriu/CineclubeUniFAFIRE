@@ -573,7 +573,7 @@ function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void })
             disabled={saving}
             className="mt-2 w-full rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
           >
-            {saving ? "Salvando..." : "Adicionar filme"}
+            {saving ? "Salvando..." : editing ? "Salvar alterações" : "Adicionar filme"}
           </button>
         </form>
       </div>
