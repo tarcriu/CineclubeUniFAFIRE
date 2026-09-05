@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, Star, Trash2, X } from "lucide-react";
+import { ChevronDown, Search, Star, Trash2, X } from "lucide-react";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
@@ -131,7 +131,10 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
   const [comment, setComment] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
+  const [editOpen, setEditOpen] = useState(false);
   const [deviceId, setDeviceId] = useState("");
+
+
 
   useEffect(() => setDeviceId(getDeviceId()), []);
 
@@ -197,7 +200,15 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
             </p>
           )}
 
-          {done ? (
+          {memberMode ? (
+            <button
+              type="button"
+              onClick={() => setEditOpen(true)}
+              className="mt-6 rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
+            >
+              Editar filme
+            </button>
+          ) : done ? (
             <p className="mt-6 rounded-md bg-secondary/50 px-4 py-3 text-sm text-muted-foreground">
               Você já avaliou este filme neste aparelho.
             </p>
@@ -262,6 +273,8 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
           <DeleteMovieButton movie={session} />
         </div>
       )}
+      {editOpen && <MovieDialog movie={session} onClose={() => setEditOpen(false)} />}
+
     </div>
   );
 }
@@ -380,14 +393,15 @@ function RateDialog({
   );
 }
 
-function AddMovieDialog({ onClose }: { onClose: () => void }) {
+function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void }) {
   const queryClient = useQueryClient();
-  const [title, setTitle] = useState("");
-  const [director, setDirector] = useState("");
-  const [year, setYear] = useState("");
-  const [sessionDate, setSessionDate] = useState("");
-  const [synopsis, setSynopsis] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const editing = Boolean(movie);
+  const [title, setTitle] = useState(movie?.title ?? "");
+  const [director, setDirector] = useState(movie?.director ?? "");
+  const [year, setYear] = useState(movie?.year ? String(movie.year) : "");
+  const [sessionDate, setSessionDate] = useState(movie?.session_date ?? "");
+  const [synopsis, setSynopsis] = useState(movie?.synopsis ?? "");
+  const [imageUrl, setImageUrl] = useState(movie?.image_url ?? "");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -409,14 +423,15 @@ function AddMovieDialog({ onClose }: { onClose: () => void }) {
       return;
     }
     setSaving(true);
-    const result = await addMovie({
+    const payload = {
       title,
       director,
       year: year.trim() ? Number(year) : null,
       synopsis,
       imageUrl,
       sessionDate,
-    });
+    };
+    const result = movie ? await updateMovie(movie.id, payload) : await addMovie(payload);
     setSaving(false);
     if (!result.ok) {
       setError(result.message);
@@ -425,6 +440,7 @@ function AddMovieDialog({ onClose }: { onClose: () => void }) {
     await queryClient.invalidateQueries({ queryKey: ["movies"] });
     onClose();
   }
+
 
   const field =
     "mt-2 h-10 w-full rounded-md border border-border bg-secondary/60 px-3 text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus:border-primary/60";
@@ -442,7 +458,10 @@ function AddMovieDialog({ onClose }: { onClose: () => void }) {
         className="max-h-[85vh] w-full max-w-[560px] overflow-y-auto rounded-lg border border-border bg-card p-6"
       >
         <div className="flex items-start justify-between gap-4">
-          <h4 className="font-display text-2xl italic">Adicionar filme</h4>
+          <h4 className="font-display text-2xl italic">
+            {editing ? "Editar filme" : "Adicionar filme"}
+          </h4>
+
           <button
             type="button"
             onClick={onClose}
@@ -554,7 +573,7 @@ function AddMovieDialog({ onClose }: { onClose: () => void }) {
             disabled={saving}
             className="mt-2 w-full rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
           >
-            {saving ? "Salvando..." : "Adicionar filme"}
+            {saving ? "Salvando..." : editing ? "Salvar alterações" : "Adicionar filme"}
           </button>
         </form>
       </div>
@@ -664,6 +683,17 @@ function AcervoRow({
   const [rateOpen, setRateOpen] = useState(false);
   const [deviceId, setDeviceId] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [confirmReview, setConfirmReview] = useState<{ id: string; name: string } | null>(null);
+
+  async function handleDeleteReview() {
+    if (!confirmReview) return;
+    setDeletingId(confirmReview.id);
+    await deleteReview(confirmReview.id);
+    await queryClient.invalidateQueries({ queryKey: ["reviews"] });
+    setDeletingId(null);
+    setConfirmReview(null);
+  }
+
   useEffect(() => setDeviceId(getDeviceId()), []);
   const { data: hasReviewed } = useHasReviewed(item.id, deviceId);
   const queryClient = useQueryClient();
@@ -801,17 +831,13 @@ function AcervoRow({
                                 type="button"
                                 aria-label="Apagar comentário"
                                 disabled={deletingId === r.id}
-                                onClick={async () => {
-                                  setDeletingId(r.id!);
-                                  await deleteReview(r.id!);
-                                  await queryClient.invalidateQueries({ queryKey: ["reviews"] });
-                                  setDeletingId(null);
-                                }}
+                                onClick={() => setConfirmReview({ id: r.id!, name })}
                                 className="text-muted-foreground transition-colors hover:text-destructive disabled:opacity-50"
                               >
                                 <Trash2 className="h-4 w-4" />
                               </button>
                             )}
+
                           </div>
                           {r.comment && (
                             <p className="mt-1 text-sm leading-relaxed text-foreground/80">
@@ -833,9 +859,20 @@ function AcervoRow({
           )}
         </div>
       )}
+      {confirmReview && (
+        <ConfirmDialog
+          title="Apagar comentário"
+          message={`Tem certeza que deseja apagar a avaliação de ${confirmReview.name}? Esta ação não pode ser desfeita.`}
+          confirmLabel="Apagar"
+          busy={deletingId === confirmReview.id}
+          onConfirm={() => void handleDeleteReview()}
+          onCancel={() => setConfirmReview(null)}
+        />
+      )}
     </div>
   );
 }
+
 
 export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) {
   const navigate = useNavigate();
@@ -846,6 +883,8 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
   const [frutigerAero, setFrutigerAero] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
 
   const memberMode = memberPage && isMember;
 
@@ -870,15 +909,32 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
     : [];
   const monthLabel = movies[0] ? formatMonthLabel(movies[0].session_date) : "";
 
+  const normalize = (value: string) =>
+    value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
+  const filteredMovies = useMemo(() => {
+    const term = normalize(search.trim());
+    if (!term) return movies;
+    return movies.filter((m) =>
+      normalize(`${m.title} ${m.director} ${m.year ?? ""}`).includes(term),
+    );
+  }, [movies, search]);
+
   const acervoByYear = useMemo(() => {
     const groups: Record<string, Movie[]> = {};
-    for (const item of movies) {
+    for (const item of filteredMovies) {
       const year = yearOf(item.session_date);
       if (!groups[year]) groups[year] = [];
       groups[year]!.push(item);
     }
     return groups;
-  }, [movies]);
+  }, [filteredMovies]);
+
+  const searching = search.trim().length > 0;
+
 
   function toggleYear(year: string) {
     setOpenYears((prev) => {
@@ -960,12 +1016,24 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
             <h2 className="font-display text-2xl italic">Acervo</h2>
             <span className="h-px flex-1 bg-border" />
           </div>
-          <p className="mt-3 text-sm text-muted-foreground">
-            Clique num título para ver notas e comentários.
-          </p>
+          <div className="relative mt-3">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Pesquisar filmes já exibidos"
+              aria-label="Pesquisar filmes já exibidos"
+              className="h-10 w-full rounded-md border border-border bg-secondary/60 pl-9 pr-3 text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus:border-primary/60"
+            />
+          </div>
+
+          {searching && Object.keys(acervoByYear).length === 0 && (
+            <p className="mt-6 text-sm text-muted-foreground">Nenhum filme encontrado.</p>
+          )}
 
           {Object.entries(acervoByYear).map(([year, items]) => {
-            const open = openYears.has(year);
+            const open = searching || openYears.has(year);
             return (
               <div key={year}>
                 <button
@@ -995,6 +1063,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
               </div>
             );
           })}
+
         </section>
       </main>
 
@@ -1043,7 +1112,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
         </div>
       </footer>
 
-      {addOpen && <AddMovieDialog onClose={() => setAddOpen(false)} />}
+      {addOpen && <MovieDialog onClose={() => setAddOpen(false)} />}
       {loginOpen && !denied && <MemberLoginDialog onClose={() => setLoginOpen(false)} />}
       {denied && <AccessDeniedDialog onClose={clearDenied} />}
     </div>
