@@ -883,6 +883,8 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
   const [frutigerAero, setFrutigerAero] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
 
   const memberMode = memberPage && isMember;
 
