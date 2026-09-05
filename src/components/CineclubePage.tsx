@@ -1016,12 +1016,24 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
             <h2 className="font-display text-2xl italic">Acervo</h2>
             <span className="h-px flex-1 bg-border" />
           </div>
-          <p className="mt-3 text-sm text-muted-foreground">
-            Clique num título para ver notas e comentários.
-          </p>
+          <div className="relative mt-3">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Pesquisar filmes já exibidos"
+              aria-label="Pesquisar filmes já exibidos"
+              className="h-10 w-full rounded-md border border-border bg-secondary/60 pl-9 pr-3 text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus:border-primary/60"
+            />
+          </div>
+
+          {searching && Object.keys(acervoByYear).length === 0 && (
+            <p className="mt-6 text-sm text-muted-foreground">Nenhum filme encontrado.</p>
+          )}
 
           {Object.entries(acervoByYear).map(([year, items]) => {
-            const open = openYears.has(year);
+            const open = searching || openYears.has(year);
             return (
               <div key={year}>
                 <button
@@ -1051,6 +1063,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
               </div>
             );
           })}
+
         </section>
       </main>
 
