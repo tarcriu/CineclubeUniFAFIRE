@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, Star, Trash2, X } from "lucide-react";
+import { ChevronDown, Search, Star, Trash2, X } from "lucide-react";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
