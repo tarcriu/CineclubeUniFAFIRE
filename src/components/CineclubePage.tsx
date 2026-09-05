@@ -131,7 +131,8 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
   const [comment, setComment] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
-  const [deviceId, setDeviceId] = useState("");
+  const [editOpen, setEditOpen] = useState(false);
+
 
   useEffect(() => setDeviceId(getDeviceId()), []);
 
