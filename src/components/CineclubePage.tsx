@@ -907,15 +907,32 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
     : [];
   const monthLabel = movies[0] ? formatMonthLabel(movies[0].session_date) : "";
 
+  const normalize = (value: string) =>
+    value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
+  const filteredMovies = useMemo(() => {
+    const term = normalize(search.trim());
+    if (!term) return movies;
+    return movies.filter((m) =>
+      normalize(`${m.title} ${m.director} ${m.year ?? ""}`).includes(term),
+    );
+  }, [movies, search]);
+
   const acervoByYear = useMemo(() => {
     const groups: Record<string, Movie[]> = {};
-    for (const item of movies) {
+    for (const item of filteredMovies) {
       const year = yearOf(item.session_date);
       if (!groups[year]) groups[year] = [];
       groups[year]!.push(item);
     }
     return groups;
-  }, [movies]);
+  }, [filteredMovies]);
+
+  const searching = search.trim().length > 0;
+
 
   function toggleYear(year: string) {
     setOpenYears((prev) => {
