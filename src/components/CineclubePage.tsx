@@ -197,7 +197,15 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
             </p>
           )}
 
-          {done ? (
+          {memberMode ? (
+            <button
+              type="button"
+              onClick={() => setEditOpen(true)}
+              className="mt-6 rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
+            >
+              Editar filme
+            </button>
+          ) : done ? (
             <p className="mt-6 rounded-md bg-secondary/50 px-4 py-3 text-sm text-muted-foreground">
               Você já avaliou este filme neste aparelho.
             </p>
@@ -262,6 +270,8 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
           <DeleteMovieButton movie={session} />
         </div>
       )}
+      {editOpen && <MovieDialog movie={session} onClose={() => setEditOpen(false)} />}
+
     </div>
   );
 }
