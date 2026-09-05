@@ -393,14 +393,15 @@ function RateDialog({
   );
 }
 
-function AddMovieDialog({ onClose }: { onClose: () => void }) {
+function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void }) {
   const queryClient = useQueryClient();
-  const [title, setTitle] = useState("");
-  const [director, setDirector] = useState("");
-  const [year, setYear] = useState("");
-  const [sessionDate, setSessionDate] = useState("");
-  const [synopsis, setSynopsis] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const editing = Boolean(movie);
+  const [title, setTitle] = useState(movie?.title ?? "");
+  const [director, setDirector] = useState(movie?.director ?? "");
+  const [year, setYear] = useState(movie?.year ? String(movie.year) : "");
+  const [sessionDate, setSessionDate] = useState(movie?.session_date ?? "");
+  const [synopsis, setSynopsis] = useState(movie?.synopsis ?? "");
+  const [imageUrl, setImageUrl] = useState(movie?.image_url ?? "");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -422,14 +423,15 @@ function AddMovieDialog({ onClose }: { onClose: () => void }) {
       return;
     }
     setSaving(true);
-    const result = await addMovie({
+    const payload = {
       title,
       director,
       year: year.trim() ? Number(year) : null,
       synopsis,
       imageUrl,
       sessionDate,
-    });
+    };
+    const result = movie ? await updateMovie(movie.id, payload) : await addMovie(payload);
     setSaving(false);
     if (!result.ok) {
       setError(result.message);
@@ -438,6 +440,7 @@ function AddMovieDialog({ onClose }: { onClose: () => void }) {
     await queryClient.invalidateQueries({ queryKey: ["movies"] });
     onClose();
   }
+
 
   const field =
     "mt-2 h-10 w-full rounded-md border border-border bg-secondary/60 px-3 text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus:border-primary/60";
