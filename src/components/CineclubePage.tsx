@@ -820,17 +820,13 @@ function AcervoRow({
                                 type="button"
                                 aria-label="Apagar comentário"
                                 disabled={deletingId === r.id}
-                                onClick={async () => {
-                                  setDeletingId(r.id!);
-                                  await deleteReview(r.id!);
-                                  await queryClient.invalidateQueries({ queryKey: ["reviews"] });
-                                  setDeletingId(null);
-                                }}
+                                onClick={() => setConfirmReview({ id: r.id!, name })}
                                 className="text-muted-foreground transition-colors hover:text-destructive disabled:opacity-50"
                               >
                                 <Trash2 className="h-4 w-4" />
                               </button>
                             )}
+
                           </div>
                           {r.comment && (
                             <p className="mt-1 text-sm leading-relaxed text-foreground/80">
