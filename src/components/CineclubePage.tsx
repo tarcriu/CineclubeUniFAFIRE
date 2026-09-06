@@ -20,7 +20,9 @@ import {
   formatMonthLabel,
   formatSessionDate,
   monthKey,
+  restoreMovie,
   updateMovie,
+  useDeletedMovies,
   useMovies,
   yearOf,
   type Movie,
@@ -112,7 +114,7 @@ function DeleteMovieButton({ movie }: { movie: Movie }) {
       {confirming && (
         <ConfirmDialog
           title="Excluir filme"
-          message={`Tem certeza que deseja excluir “${movie.title}”? Esta ação não pode ser desfeita.`}
+          message={`Tem certeza que deseja excluir “${movie.title}”? O filme e suas avaliações ficarão guardados por 3 meses e poderão ser recuperados.`}
           confirmLabel="Excluir filme"
           busy={busy}
           onConfirm={() => void handleDelete()}
@@ -647,7 +649,7 @@ function MemberLoginDialog({ onClose }: { onClose: () => void }) {
         </div>
 
         <p className="mt-4 text-sm text-muted-foreground">
-          Entre com a conta cineclube@unifafire.edu.br.
+          Faça seu login com o e-mail institucional.
         </p>
 
         {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
@@ -902,6 +904,77 @@ function AcervoRow({
 }
 
 
+function RestoreMovieDialog({ onClose }: { onClose: () => void }) {
+  const queryClient = useQueryClient();
+  const { data: deleted = [], isLoading } = useDeletedMovies(true);
+  const [busyId, setBusyId] = useState<string | null>(null);
+
+  async function handleRestore(id: string) {
+    setBusyId(id);
+    await restoreMovie(id);
+    await queryClient.invalidateQueries({ queryKey: ["movies"] });
+    await queryClient.invalidateQueries({ queryKey: ["deleted-movies"] });
+    setBusyId(null);
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4"
+      onClick={onClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        onClick={(e) => e.stopPropagation()}
+        className="max-h-[85vh] w-full max-w-[520px] overflow-y-auto rounded-lg border border-border bg-card p-6"
+      >
+        <div className="flex items-start justify-between gap-4">
+          <h4 className="font-display text-2xl italic">Recuperar filme excluído</h4>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Fechar"
+            className="text-muted-foreground transition-opacity hover:opacity-70"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <p className="mt-3 text-sm text-muted-foreground">
+          Filmes excluídos e suas avaliações ficam guardados por 3 meses.
+        </p>
+
+        {isLoading ? (
+          <p className="mt-6 text-sm text-muted-foreground">Carregando...</p>
+        ) : deleted.length === 0 ? (
+          <p className="mt-6 text-sm text-muted-foreground">Nenhum filme excluído no momento.</p>
+        ) : (
+          <ul className="mt-6 divide-y divide-border">
+            {deleted.map((movie) => (
+              <li key={movie.id} className="flex items-center justify-between gap-4 py-3">
+                <div>
+                  <p className="text-sm">{movie.title}</p>
+                  <p className="text-[12px] text-muted-foreground">
+                    {credits(movie)} · sessão de {formatSessionDate(movie.session_date)}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  disabled={busyId === movie.id}
+                  onClick={() => void handleRestore(movie.id)}
+                  className="shrink-0 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+                >
+                  {busyId === movie.id ? "Recuperando..." : "Recuperar"}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) {
   const navigate = useNavigate();
   const { data: dbReviews = [] } = useReviews();
@@ -911,6 +984,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
   const [frutigerAero, setFrutigerAero] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
+  const [restoreOpen, setRestoreOpen] = useState(false);
   const [search, setSearch] = useState("");
 
 
@@ -1137,10 +1211,21 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
               Adicionar filme
             </button>
           )}
+
+          {memberMode && (
+            <button
+              type="button"
+              onClick={() => setRestoreOpen(true)}
+              className="rounded-md border border-border px-5 py-3 text-sm font-medium transition-opacity hover:opacity-80"
+            >
+              Recuperar filme excluído
+            </button>
+          )}
         </div>
       </footer>
 
       {addOpen && <MovieDialog onClose={() => setAddOpen(false)} />}
+      {restoreOpen && <RestoreMovieDialog onClose={() => setRestoreOpen(false)} />}
       {loginOpen && !denied && <MemberLoginDialog onClose={() => setLoginOpen(false)} />}
       {denied && <AccessDeniedDialog onClose={clearDenied} />}
     </div>
