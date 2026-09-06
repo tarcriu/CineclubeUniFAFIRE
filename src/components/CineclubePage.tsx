@@ -114,7 +114,7 @@ function DeleteMovieButton({ movie }: { movie: Movie }) {
       {confirming && (
         <ConfirmDialog
           title="Excluir filme"
-          message={`Tem certeza que deseja excluir “${movie.title}”? Esta ação não pode ser desfeita.`}
+          message={`Tem certeza que deseja excluir “${movie.title}”? O filme e suas avaliações ficarão guardados por 3 meses e poderão ser recuperados.`}
           confirmLabel="Excluir filme"
           busy={busy}
           onConfirm={() => void handleDelete()}
