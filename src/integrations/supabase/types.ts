@@ -17,6 +17,7 @@ export type Database = {
       movies: {
         Row: {
           created_at: string
+          deleted_at: string | null
           director: string
           id: string
           image_url: string | null
@@ -28,6 +29,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          deleted_at?: string | null
           director: string
           id: string
           image_url?: string | null
@@ -39,6 +41,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          deleted_at?: string | null
           director?: string
           id?: string
           image_url?: string | null
@@ -115,6 +118,7 @@ export type Database = {
         Args: { _device_id: string; _movie_id: string }
         Returns: boolean
       }
+      purge_old_deleted_movies: { Args: never; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
