@@ -801,37 +801,41 @@ function AcervoRow({
           ) : (
             <>
               <div className="rounded-md bg-secondary/50 px-4 py-3">
-                <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-2">
+                <div className="flex flex-col gap-3">
                   <span className="text-[13px] text-muted-foreground">
                     {reviews.length} {reviews.length === 1 ? "voto" : "votos"}
                   </span>
-                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+                  <div className="flex flex-col gap-2">
                     {[5, 4, 3, 2, 1].map((n) => {
                       const count = reviews.filter((r) => Math.round(r.rating) === n).length;
                       const pct = (count / reviews.length) * 100;
                       return (
-                        <div key={n} className="flex items-center gap-2">
-                          <span className="text-[13px] text-muted-foreground">{n}</span>
-                          <div className="flex gap-[2px]">
-                            {[1, 2, 3, 4, 5].map((s) => (
-                              <Star
-                                key={s}
-                                style={{ width: 11, height: 11 }}
-                                className={
-                                  s <= n
-                                    ? "fill-primary text-transparent"
-                                    : "fill-muted-foreground/25 text-transparent"
-                                }
-                              />
-                            ))}
+                        <div key={n} className="flex w-full items-center gap-3">
+                          <div className="flex w-24 shrink-0 items-center gap-2">
+                            <span className="text-[13px] text-muted-foreground">{n}</span>
+                            <div className="flex gap-[2px]">
+                              {[1, 2, 3, 4, 5].map((s) => (
+                                <Star
+                                  key={s}
+                                  style={{ width: 11, height: 11 }}
+                                  className={
+                                    s <= n
+                                      ? "fill-primary text-transparent"
+                                      : "fill-muted-foreground/25 text-transparent"
+                                  }
+                                />
+                              ))}
+                            </div>
                           </div>
-                          <span className="h-[6px] w-[110px] overflow-hidden rounded-full bg-muted-foreground/20">
+                          <div className="h-[10px] flex-1 overflow-hidden rounded-full bg-muted-foreground/20">
                             <span
                               className="block h-full rounded-full bg-primary"
                               style={{ width: `${pct}%` }}
                             />
+                          </div>
+                          <span className="w-6 shrink-0 text-right text-[13px] text-muted-foreground">
+                            {count}
                           </span>
-                          <span className="text-[13px] text-muted-foreground">{count}</span>
                         </div>
                       );
                     })}
