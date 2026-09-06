@@ -984,6 +984,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
   const [frutigerAero, setFrutigerAero] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
+  const [restoreOpen, setRestoreOpen] = useState(false);
   const [search, setSearch] = useState("");
 
 
@@ -1210,10 +1211,21 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
               Adicionar filme
             </button>
           )}
+
+          {memberMode && (
+            <button
+              type="button"
+              onClick={() => setRestoreOpen(true)}
+              className="rounded-md border border-border px-5 py-3 text-sm font-medium transition-opacity hover:opacity-80"
+            >
+              Recuperar filme excluído
+            </button>
+          )}
         </div>
       </footer>
 
       {addOpen && <MovieDialog onClose={() => setAddOpen(false)} />}
+      {restoreOpen && <RestoreMovieDialog onClose={() => setRestoreOpen(false)} />}
       {loginOpen && !denied && <MemberLoginDialog onClose={() => setLoginOpen(false)} />}
       {denied && <AccessDeniedDialog onClose={clearDenied} />}
     </div>
