@@ -649,7 +649,7 @@ function MemberLoginDialog({ onClose }: { onClose: () => void }) {
         </div>
 
         <p className="mt-4 text-sm text-muted-foreground">
-          Entre com a conta cineclube@unifafire.edu.br.
+          Faça seu login com o e-mail institucional.
         </p>
 
         {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
