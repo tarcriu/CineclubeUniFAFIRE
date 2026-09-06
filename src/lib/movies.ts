@@ -61,11 +61,41 @@ export function useMovies() {
       const { data, error } = await (supabase as any)
         .from("movies")
         .select("id,title,director,year,synopsis,image_url,session_date")
+        .is("deleted_at", null)
         .order("session_date", { ascending: false });
       if (error) throw error;
       return (data ?? []) as Movie[];
     },
   });
+}
+
+export type DeletedMovie = Movie & { deleted_at: string };
+
+/** Movies in the 3-month trash, most recently deleted first. */
+export function useDeletedMovies(enabled: boolean) {
+  return useQuery({
+    queryKey: ["deleted-movies"],
+    enabled,
+    queryFn: async (): Promise<DeletedMovie[]> => {
+      await (supabase as any).rpc("purge_old_deleted_movies");
+      const { data, error } = await (supabase as any)
+        .from("movies")
+        .select("id,title,director,year,synopsis,image_url,session_date,deleted_at")
+        .not("deleted_at", "is", null)
+        .order("deleted_at", { ascending: false });
+      if (error) throw error;
+      return (data ?? []) as DeletedMovie[];
+    },
+  });
+}
+
+export async function restoreMovie(id: string) {
+  const { error } = await (supabase as any)
+    .from("movies")
+    .update({ deleted_at: null })
+    .eq("id", id);
+  if (error) return { ok: false as const, message: "Não foi possível recuperar o filme." };
+  return { ok: true as const };
 }
 
 export function slugify(value: string) {
