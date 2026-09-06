@@ -135,7 +135,10 @@ export async function addMovie(input: {
 }
 
 export async function deleteMovie(id: string) {
-  const { error } = await (supabase as any).from("movies").delete().eq("id", id);
+  const { error } = await (supabase as any)
+    .from("movies")
+    .update({ deleted_at: new Date().toISOString() })
+    .eq("id", id);
   if (error) return { ok: false as const, message: "Não foi possível excluir o filme." };
   return { ok: true as const };
 }
