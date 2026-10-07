@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, Search, Star, Trash2, X } from "lucide-react";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { PublicQr, QrDialog } from "@/components/QrCode";
 import {
   formatReviewDate,
   getDeviceId,
@@ -1004,6 +1005,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
   const [loginOpen, setLoginOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
   const [restoreOpen, setRestoreOpen] = useState(false);
+  const [qrOpen, setQrOpen] = useState(false);
   const [search, setSearch] = useState("");
 
 
@@ -1240,11 +1242,24 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
               Recuperar filme excluído
             </button>
           )}
+
+          {memberMode && (
+            <button
+              type="button"
+              onClick={() => setQrOpen(true)}
+              className="rounded-md border border-border px-5 py-3 text-sm font-medium transition-opacity hover:opacity-80"
+            >
+              Código QR
+            </button>
+          )}
+
+          <PublicQr />
         </div>
       </footer>
 
       {addOpen && <MovieDialog onClose={() => setAddOpen(false)} />}
       {restoreOpen && <RestoreMovieDialog onClose={() => setRestoreOpen(false)} />}
+      {qrOpen && <QrDialog onClose={() => setQrOpen(false)} />}
       {loginOpen && !denied && <MemberLoginDialog onClose={() => setLoginOpen(false)} />}
       {denied && <AccessDeniedDialog onClose={clearDenied} />}
     </div>

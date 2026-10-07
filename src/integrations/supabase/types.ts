@@ -83,6 +83,30 @@ export type Database = {
         }
         Relationships: []
       }
+      site_qr: {
+        Row: {
+          id: number
+          image_url: string | null
+          link: string | null
+          updated_at: string
+          visible: boolean
+        }
+        Insert: {
+          id?: number
+          image_url?: string | null
+          link?: string | null
+          updated_at?: string
+          visible?: boolean
+        }
+        Update: {
+          id?: number
+          image_url?: string | null
+          link?: string | null
+          updated_at?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
     }
     Views: {
       reviews_public: {
