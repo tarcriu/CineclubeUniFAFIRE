@@ -285,11 +285,13 @@ function RateDialog({
   movieId,
   title,
   synopsis,
+  imageUrl,
   onClose,
 }: {
   movieId: string;
   title: string;
   synopsis?: string | null;
+  imageUrl?: string | null;
   onClose: () => void;
 }) {
   const queryClient = useQueryClient();
@@ -342,7 +344,7 @@ function RateDialog({
           </button>
         </div>
 
-        {synopsis?.trim() && (
+        {(synopsis?.trim() || imageUrl?.trim()) && (
           <div className="mt-4">
             <button
               type="button"
@@ -355,9 +357,21 @@ function RateDialog({
               />
             </button>
             {synopsisOpen && (
-              <p className="mt-2 text-justify text-[15px] leading-relaxed text-foreground/85">
-                {synopsis}
-              </p>
+              <div className="mt-2">
+                {synopsis?.trim() && (
+                  <p className="text-justify text-[15px] leading-relaxed text-foreground/85">
+                    {synopsis}
+                  </p>
+                )}
+                {imageUrl?.trim() && (
+                  <img
+                    src={imageUrl}
+                    alt={title}
+                    loading="lazy"
+                    className="mt-3 w-full rounded-md border border-border object-cover"
+                  />
+                )}
+              </div>
             )}
           </div>
         )}
@@ -792,6 +806,7 @@ function AcervoRow({
               movieId={item.id}
               title={item.title}
               synopsis={item.synopsis}
+              imageUrl={item.image_url}
               onClose={() => setRateOpen(false)}
             />
           )}
