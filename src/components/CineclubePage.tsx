@@ -285,11 +285,13 @@ function RateDialog({
   movieId,
   title,
   synopsis,
+  imageUrl,
   onClose,
 }: {
   movieId: string;
   title: string;
   synopsis?: string | null;
+  imageUrl?: string | null;
   onClose: () => void;
 }) {
   const queryClient = useQueryClient();
