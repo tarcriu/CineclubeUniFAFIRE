@@ -806,6 +806,7 @@ function AcervoRow({
               movieId={item.id}
               title={item.title}
               synopsis={item.synopsis}
+              imageUrl={item.image_url}
               onClose={() => setRateOpen(false)}
             />
           )}
