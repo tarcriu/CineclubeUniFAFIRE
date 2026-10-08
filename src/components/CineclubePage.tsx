@@ -1022,30 +1022,6 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
   const { data: movies = [] } = useMovies();
   const { isMember, denied, clearDenied } = useMember();
   const [openYears, setOpenYears] = useState<Set<string>>(new Set());
-  const [frutigerAero, setFrutigerAero] = useState(false);
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [addOpen, setAddOpen] = useState(false);
-  const [restoreOpen, setRestoreOpen] = useState(false);
-  const [qrOpen, setQrOpen] = useState(false);
-  const [search, setSearch] = useState("");
-
-
-  const memberMode = memberPage && isMember;
-
-  useEffect(() => {
-    const stored = window.localStorage.getItem("frutiger-aero");
-    setFrutigerAero(stored === "true");
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("frutiger-aero", frutigerAero);
-  }, [frutigerAero]);
-
-  const toggleFrutigerAero = () => {
-    const next = !frutigerAero;
-    setFrutigerAero(next);
-    window.localStorage.setItem("frutiger-aero", String(next));
-  };
 
   const currentMonth = movies[0] ? monthKey(movies[0].session_date) : null;
   const sessions = currentMonth
@@ -1089,39 +1065,17 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
     });
   }
 
-  const unifafireLogoStyle = frutigerAero ? { filter: "brightness(0) invert(1)" } : undefined;
-
-  return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border">
-        <div className="mx-auto flex max-w-[832px] items-center justify-between gap-4 px-4 py-6 sm:gap-6">
-          <div className="flex items-center gap-5">
             <img
-              src={cineclubeLogo.url}
-              alt="Cine Clube"
-              className="logo-dark h-24 w-auto opacity-70"
+              src={unifafireLogo.url}
+              alt="UniFAFIRE"
+              className="logo-dark h-8 w-auto opacity-75 sm:h-12"
             />
-            <img src={cineclubeLogoGreen.url} alt="Cine Clube" className="logo-light h-24 w-auto" />
-            <span className="h-10 w-px bg-border" />
-            <button
-              type="button"
-              onClick={toggleFrutigerAero}
-              aria-label="Alternar modo Frutiger Aero"
-              className="cursor-pointer bg-transparent p-0"
-            >
-              <img
-                src={unifafireLogo.url}
-                alt="UniFAFIRE"
-                className="logo-dark h-8 w-auto opacity-75 sm:h-12"
-                style={unifafireLogoStyle}
-              />
-              <img
-                src={unifafireLogoGreen.url}
-                alt="UniFAFIRE"
-                className="logo-light h-8 w-auto sm:h-12"
-                style={unifafireLogoStyle}
-              />
-            </button>
+            <img
+              src={unifafireLogoGreen.url}
+              alt="UniFAFIRE"
+              className="logo-light h-8 w-auto sm:h-12"
+            />
+
           </div>
 
           <div className="flex items-center gap-4">
