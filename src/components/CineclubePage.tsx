@@ -22,6 +22,7 @@ import {
   formatSessionDate,
   monthKey,
   restoreMovie,
+  speakersLabel,
   updateMovie,
   useDeletedMovies,
   useMovies,
@@ -182,6 +183,9 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
               </p>
               <h3 className="mt-1 font-display text-4xl italic">{session.title}</h3>
               <p className="mt-1 text-sm text-foreground/75">{credits(session)}</p>
+              {speakersLabel(session) && (
+                <p className="mt-0.5 text-sm text-foreground/75">{speakersLabel(session)}</p>
+              )}
             </div>
           </div>
         )}
@@ -194,6 +198,9 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
               </p>
               <h3 className="mt-1 font-display text-4xl italic">{session.title}</h3>
               <p className="mt-1 text-sm text-foreground/75">{credits(session)}</p>
+              {speakersLabel(session) && (
+                <p className="mt-0.5 text-sm text-foreground/75">{speakersLabel(session)}</p>
+              )}
             </div>
           )}
 
