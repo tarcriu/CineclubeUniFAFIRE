@@ -5,11 +5,23 @@ export type Movie = {
   id: string;
   title: string;
   director: string;
+  speakers: string | null;
   year: number | null;
   synopsis: string | null;
   image_url: string | null;
   session_date: string;
 };
+
+/** "Palestrante: X" or "Palestrantes: X, Y" depending on how many names were given. */
+export function speakersLabel(movie: Movie) {
+  const raw = movie.speakers?.trim();
+  if (!raw) return null;
+  const count = raw
+    .split(/,| e /i)
+    .map((s) => s.trim())
+    .filter(Boolean).length;
+  return `${count > 1 ? "Palestrantes" : "Palestrante"}: ${raw}`;
+}
 
 const MONTHS = [
   "janeiro",
