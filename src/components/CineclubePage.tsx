@@ -1079,8 +1079,6 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
             <span className="h-10 w-px bg-border" />
             <img
 
-
-            <img
               src={unifafireLogo.url}
               alt="UniFAFIRE"
               className="logo-dark h-8 w-auto opacity-75 sm:h-12"
