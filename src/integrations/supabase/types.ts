@@ -22,6 +22,7 @@ export type Database = {
           id: string
           image_url: string | null
           session_date: string
+          speakers: string | null
           synopsis: string | null
           title: string
           updated_at: string
@@ -34,6 +35,7 @@ export type Database = {
           id: string
           image_url?: string | null
           session_date: string
+          speakers?: string | null
           synopsis?: string | null
           title: string
           updated_at?: string
@@ -46,6 +48,7 @@ export type Database = {
           id?: string
           image_url?: string | null
           session_date?: string
+          speakers?: string | null
           synopsis?: string | null
           title?: string
           updated_at?: string
