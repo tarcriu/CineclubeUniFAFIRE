@@ -72,7 +72,7 @@ export function useMovies() {
     queryFn: async (): Promise<Movie[]> => {
       const { data, error } = await (supabase as any)
         .from("movies")
-        .select("id,title,director,year,synopsis,image_url,session_date")
+        .select("id,title,director,speakers,year,synopsis,image_url,session_date")
         .is("deleted_at", null)
         .order("session_date", { ascending: false });
       if (error) throw error;
@@ -92,7 +92,7 @@ export function useDeletedMovies(enabled: boolean) {
       await (supabase as any).rpc("purge_old_deleted_movies");
       const { data, error } = await (supabase as any)
         .from("movies")
-        .select("id,title,director,year,synopsis,image_url,session_date,deleted_at")
+        .select("id,title,director,speakers,year,synopsis,image_url,session_date,deleted_at")
         .not("deleted_at", "is", null)
         .order("deleted_at", { ascending: false });
       if (error) throw error;
@@ -125,6 +125,7 @@ export function slugify(value: string) {
 export async function addMovie(input: {
   title: string;
   director: string;
+  speakers: string;
   year: number | null;
   synopsis: string;
   imageUrl: string;
@@ -135,6 +136,7 @@ export async function addMovie(input: {
     id,
     title: input.title.trim(),
     director: input.director.trim(),
+    speakers: input.speakers.trim() || null,
     year: input.year,
     synopsis: input.synopsis.trim() || null,
     image_url: input.imageUrl.trim() || null,
@@ -185,6 +187,7 @@ export async function updateMovie(
   input: {
     title: string;
     director: string;
+    speakers: string;
     year: number | null;
     synopsis: string;
     imageUrl: string;
@@ -196,6 +199,7 @@ export async function updateMovie(
     .update({
       title: input.title.trim(),
       director: input.director.trim(),
+      speakers: input.speakers.trim() || null,
       year: input.year,
       synopsis: input.synopsis.trim() || null,
       image_url: input.imageUrl.trim() || null,
