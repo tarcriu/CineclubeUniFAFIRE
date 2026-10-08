@@ -1022,6 +1022,15 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
   const { data: movies = [] } = useMovies();
   const { isMember, denied, clearDenied } = useMember();
   const [openYears, setOpenYears] = useState<Set<string>>(new Set());
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
+  const [restoreOpen, setRestoreOpen] = useState(false);
+  const [qrOpen, setQrOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const memberMode = memberPage && isMember;
+
+
 
   const currentMonth = movies[0] ? monthKey(movies[0].session_date) : null;
   const sessions = currentMonth
