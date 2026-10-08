@@ -438,6 +438,7 @@ function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void })
   const editing = Boolean(movie);
   const [title, setTitle] = useState(movie?.title ?? "");
   const [director, setDirector] = useState(movie?.director ?? "");
+  const [speakers, setSpeakers] = useState(movie?.speakers ?? "");
   const [year, setYear] = useState(movie?.year ? String(movie.year) : "");
   const [sessionDate, setSessionDate] = useState(movie?.session_date ?? "");
   const [synopsis, setSynopsis] = useState(movie?.synopsis ?? "");
@@ -466,6 +467,7 @@ function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void })
     const payload = {
       title,
       director,
+      speakers,
       year: year.trim() ? Number(year) : null,
       synopsis,
       imageUrl,
@@ -537,6 +539,18 @@ function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void })
                 onChange={(e) => setDirector(e.target.value)}
                 className={field}
                 placeholder="Nome do diretor"
+              />
+            </div>
+            <div>
+              <label htmlFor="filme-palestrantes" className={label}>
+                PALESTRANTES
+              </label>
+              <input
+                id="filme-palestrantes"
+                value={speakers}
+                onChange={(e) => setSpeakers(e.target.value)}
+                className={field}
+                placeholder="Nomes separados por vírgula"
               />
             </div>
             <div>
