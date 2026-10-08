@@ -1065,6 +1065,21 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
     });
   }
 
+  return (
+    <div className="min-h-screen bg-background">
+      <header className="border-b border-border">
+        <div className="mx-auto flex max-w-[832px] items-center justify-between gap-4 px-4 py-6 sm:gap-6">
+          <div className="flex items-center gap-5">
+            <img
+              src={cineclubeLogo.url}
+              alt="Cine Clube"
+              className="logo-dark h-24 w-auto opacity-70"
+            />
+            <img src={cineclubeLogoGreen.url} alt="Cine Clube" className="logo-light h-24 w-auto" />
+            <span className="h-10 w-px bg-border" />
+            <img
+
+
             <img
               src={unifafireLogo.url}
               alt="UniFAFIRE"
