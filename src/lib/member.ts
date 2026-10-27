@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 
-export const MEMBER_EMAIL = "cineclube@unifafire.edu.br";
+export const MEMBER_EMAILS = [
+  "cineclube@unifafire.edu.br",
+  "dionisio202527808@grad.unifafire.edu.br",
+];
+
+export function isMemberEmail(email: string | null | undefined) {
+  return MEMBER_EMAILS.includes((email ?? "").trim().toLowerCase());
+}
 
 export function useMember() {
   const [email, setEmail] = useState<string | null>(null);
@@ -22,7 +29,7 @@ export function useMember() {
     };
   }, []);
 
-  const isMember = (email ?? "").toLowerCase() === MEMBER_EMAIL;
+  const isMember = isMemberEmail(email);
 
   useEffect(() => {
     if (email && !isMember) {
@@ -52,11 +59,11 @@ export async function signInAsMember() {
 
   const { data } = await supabase.auth.getUser();
   const email = (data.user?.email ?? "").toLowerCase();
-  if (email !== MEMBER_EMAIL) {
+  if (!isMemberEmail(email)) {
     await supabase.auth.signOut();
     return {
       ok: false as const,
-      message: "Acesso negado. Use a conta cineclube@unifafire.edu.br.",
+      message: "Acesso negado. Faça seu login com o e-mail institucional.",
     };
   }
   return { ok: true as const };

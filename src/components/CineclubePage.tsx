@@ -1061,7 +1061,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
   const navigate = useNavigate();
   const { data: dbReviews = [] } = useReviews();
   const { data: movies = [] } = useMovies();
-  const { isMember, denied, clearDenied } = useMember();
+  const { email: memberEmail, isMember, denied, clearDenied } = useMember();
   const [openYears, setOpenYears] = useState<Set<string>>(new Set());
   const [loginOpen, setLoginOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
@@ -1249,7 +1249,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
               }}
               className="text-[13px] text-muted-foreground underline-offset-4 transition-opacity hover:opacity-80 hover:underline"
             >
-              Logado como cineclube@unifafire.edu.br
+              Logado como {memberEmail}
             </button>
           ) : (
             <button
