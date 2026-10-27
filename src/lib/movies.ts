@@ -6,6 +6,7 @@ export type Movie = {
   title: string;
   director: string;
   speakers: string | null;
+  genres: string[];
   year: number | null;
   synopsis: string | null;
   image_url: string | null;
@@ -22,6 +23,12 @@ export function speakersLabel(movie: Movie) {
     .filter(Boolean).length;
   return `${count > 1 ? "Palestrantes" : "Palestrante"}: ${raw}`;
 }
+
+export const GENRES = [
+  "Ação", "Animação", "Aventura", "Biografia", "Comédia", "Crime", "Documentário", "Drama",
+  "Fantasia", "Faroeste", "Ficção científica", "Guerra", "Histórico", "Musical", "Romance",
+  "Suspense", "Terror",
+];
 
 const MONTHS = [
   "janeiro",
@@ -72,7 +79,7 @@ export function useMovies() {
     queryFn: async (): Promise<Movie[]> => {
       const { data, error } = await (supabase as any)
         .from("movies")
-        .select("id,title,director,speakers,year,synopsis,image_url,session_date")
+        .select("id,title,director,speakers,genres,year,synopsis,image_url,session_date")
         .is("deleted_at", null)
         .order("session_date", { ascending: false });
       if (error) throw error;
@@ -92,7 +99,7 @@ export function useDeletedMovies(enabled: boolean) {
       await (supabase as any).rpc("purge_old_deleted_movies");
       const { data, error } = await (supabase as any)
         .from("movies")
-        .select("id,title,director,speakers,year,synopsis,image_url,session_date,deleted_at")
+        .select("id,title,director,speakers,genres,year,synopsis,image_url,session_date,deleted_at")
         .not("deleted_at", "is", null)
         .order("deleted_at", { ascending: false });
       if (error) throw error;
@@ -126,6 +133,7 @@ export async function addMovie(input: {
   title: string;
   director: string;
   speakers: string;
+  genres: string[];
   year: number | null;
   synopsis: string;
   imageUrl: string;
@@ -137,6 +145,7 @@ export async function addMovie(input: {
     title: input.title.trim(),
     director: input.director.trim(),
     speakers: input.speakers.trim() || null,
+    genres: input.genres,
     year: input.year,
     synopsis: input.synopsis.trim() || null,
     image_url: input.imageUrl.trim() || null,
@@ -188,6 +197,7 @@ export async function updateMovie(
     title: string;
     director: string;
     speakers: string;
+    genres: string[];
     year: number | null;
     synopsis: string;
     imageUrl: string;
@@ -200,6 +210,7 @@ export async function updateMovie(
       title: input.title.trim(),
       director: input.director.trim(),
       speakers: input.speakers.trim() || null,
+    genres: input.genres,
       year: input.year,
       synopsis: input.synopsis.trim() || null,
       image_url: input.imageUrl.trim() || null,

@@ -23,6 +23,7 @@ import {
   monthKey,
   restoreMovie,
   speakersLabel,
+  GENRES,
   updateMovie,
   useDeletedMovies,
   useMovies,
@@ -186,6 +187,7 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
               {speakersLabel(session) && (
                 <p className="mt-0.5 text-sm text-foreground/75">{speakersLabel(session)}</p>
               )}
+              <GenreTags genres={session.genres} />
             </div>
           </div>
         )}
@@ -201,6 +203,7 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
               {speakersLabel(session) && (
                 <p className="mt-0.5 text-sm text-foreground/75">{speakersLabel(session)}</p>
               )}
+              <GenreTags genres={session.genres} />
             </div>
           )}
 
@@ -440,12 +443,28 @@ function RateDialog({
   );
 }
 
+function GenreTags({ genres }: { genres?: string[] | null }) {
+  if (!genres?.length) return null;
+  return (
+    <div className="mt-2 flex flex-wrap gap-1.5">
+      {genres.map((g) => (
+        <span key={g} className="rounded-full border border-primary/50 bg-background/60 px-2.5 py-0.5 text-[11px] text-foreground/85">
+          {g}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void }) {
   const queryClient = useQueryClient();
   const editing = Boolean(movie);
   const [title, setTitle] = useState(movie?.title ?? "");
   const [director, setDirector] = useState(movie?.director ?? "");
   const [speakers, setSpeakers] = useState(movie?.speakers ?? "");
+  const [genres, setGenres] = useState<string[]>(movie?.genres ?? []);
+  const toggleGenre = (g: string) =>
+    setGenres((cur) => (cur.includes(g) ? cur.filter((x) => x !== g) : [...cur, g]));
   const [year, setYear] = useState(movie?.year ? String(movie.year) : "");
   const [sessionDate, setSessionDate] = useState(movie?.session_date ?? "");
   const [synopsis, setSynopsis] = useState(movie?.synopsis ?? "");
@@ -475,6 +494,7 @@ function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void })
       title,
       director,
       speakers,
+      genres,
       year: year.trim() ? Number(year) : null,
       synopsis,
       imageUrl,
@@ -533,6 +553,26 @@ function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void })
               className={field}
               placeholder="Nome do filme"
             />
+          </div>
+
+          <div>
+            <span className={label}>GÊNEROS</span>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {GENRES.map((g) => {
+                const on = genres.includes(g);
+                return (
+                  <button
+                    key={g}
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => toggleGenre(g)}
+                    className={`rounded-full border px-3 py-1 text-xs transition-colors ${on ? "border-accent bg-accent text-accent-foreground" : "border-border text-muted-foreground hover:border-primary/60"}`}
+                  >
+                    {g}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
