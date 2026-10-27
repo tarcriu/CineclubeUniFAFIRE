@@ -151,6 +151,7 @@ export type Database = {
         Args: { _device_id: string; _movie_id: string }
         Returns: boolean
       }
+      is_cineclube_member: { Args: never; Returns: boolean }
       purge_old_deleted_movies: { Args: never; Returns: undefined }
     }
     Enums: {
