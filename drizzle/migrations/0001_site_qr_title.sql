@@ -1,0 +1,1 @@
+ALTER TABLE public.site_qr ADD COLUMN IF NOT EXISTS title text;

@@ -91,6 +91,7 @@ export type Database = {
           id: number
           image_url: string | null
           link: string | null
+          title: string | null
           updated_at: string
           visible: boolean
         }
@@ -98,6 +99,7 @@ export type Database = {
           id?: number
           image_url?: string | null
           link?: string | null
+          title?: string | null
           updated_at?: string
           visible?: boolean
         }
@@ -105,6 +107,7 @@ export type Database = {
           id?: number
           image_url?: string | null
           link?: string | null
+          title?: string | null
           updated_at?: string
           visible?: boolean
         }
