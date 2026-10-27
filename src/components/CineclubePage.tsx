@@ -832,6 +832,7 @@ function AcervoRow({
           <p className="mt-1 text-[13px] text-muted-foreground">
             {formatSessionDate(item.session_date)}
           </p>
+          <GenreTags genres={item.genres} />
         </div>
         <div className="flex shrink-0 items-center gap-3">
           {rating !== null && (
