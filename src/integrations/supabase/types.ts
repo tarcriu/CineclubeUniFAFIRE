@@ -19,6 +19,7 @@ export type Database = {
           created_at: string
           deleted_at: string | null
           director: string
+          genres: string[]
           id: string
           image_url: string | null
           session_date: string
@@ -32,6 +33,7 @@ export type Database = {
           created_at?: string
           deleted_at?: string | null
           director: string
+          genres?: string[]
           id: string
           image_url?: string | null
           session_date: string
@@ -45,6 +47,7 @@ export type Database = {
           created_at?: string
           deleted_at?: string | null
           director?: string
+          genres?: string[]
           id?: string
           image_url?: string | null
           session_date?: string

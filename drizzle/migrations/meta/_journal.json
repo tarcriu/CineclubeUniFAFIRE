@@ -15,6 +15,13 @@
       "when": 1793102785728,
       "tag": "0001_site_qr_title",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793103006281,
+      "tag": "0002_movies_genres",
+      "breakpoints": true
     }
   ]
 }
