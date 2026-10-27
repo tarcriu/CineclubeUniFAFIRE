@@ -4,7 +4,7 @@ import QRCode from "qrcode";
 import { X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-type SiteQr = { link: string | null; image_url: string | null; visible: boolean };
+type SiteQr = { title: string | null; link: string | null; image_url: string | null; visible: boolean };
 
 export function useSiteQr() {
   return useQuery({
@@ -12,7 +12,7 @@ export function useSiteQr() {
     queryFn: async (): Promise<SiteQr | null> => {
       const { data, error } = await (supabase as any)
         .from("site_qr")
-        .select("link,image_url,visible")
+        .select("title,link,image_url,visible")
         .eq("id", 1)
         .maybeSingle();
       if (error) throw error;
@@ -57,6 +57,7 @@ export function PublicQr() {
       rel="noopener noreferrer"
       className="flex flex-col items-center gap-2 transition-opacity hover:opacity-80"
     >
+      {qr.title && <span className="font-display text-xl italic">{qr.title}</span>}
       <img src={src} alt="Código QR" className="h-40 w-40 rounded-md bg-white p-2" />
       <span className="text-sm text-muted-foreground">escaneie ou clique</span>
     </a>
@@ -78,13 +79,15 @@ export function QrDialog({ onClose }: { onClose: () => void }) {
   const src = useGeneratedImage(qr);
   const [mode, setMode] = useState<"menu" | "choose" | "confirmDelete">("menu");
   const [link, setLink] = useState("");
+  const [title, setTitle] = useState("");
   const [image, setImage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setLink(qr?.link ?? "");
-  }, [qr?.link]);
+    setTitle(qr?.title ?? "");
+  }, [qr?.link, qr?.title]);
 
   async function run(values: Partial<SiteQr>) {
     setBusy(true);
@@ -121,6 +124,7 @@ export function QrDialog({ onClose }: { onClose: () => void }) {
 
         {src && (
           <div className="mt-4 flex flex-col items-center gap-1">
+            {qr?.title && <span className="font-display text-lg italic">{qr.title}</span>}
             <img src={src} alt="Código QR" className="h-32 w-32 rounded-md bg-white p-2" />
             <span className="text-[12px] text-muted-foreground">
               {qr?.visible ? "Exibido no site" : "Não exibido"}
@@ -139,7 +143,7 @@ export function QrDialog({ onClose }: { onClose: () => void }) {
               disabled={busy || !src}
               onClick={() => void run({ visible: true })}
             >
-              Exibir QR Code
+              Exibir Código QR
             </button>
             <button
               type="button"
@@ -147,13 +151,19 @@ export function QrDialog({ onClose }: { onClose: () => void }) {
               onClick={() => setMode("confirmDelete")}
               className="w-full rounded-md bg-destructive px-5 py-3 text-sm font-medium text-destructive-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
             >
-              Excluir QR Code
+              Excluir Código QR
             </button>
           </div>
         )}
 
         {mode === "choose" && (
           <div className="mt-6 space-y-3">
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Título (opcional)"
+              className="h-10 w-full rounded-md border border-border bg-secondary/60 px-3 text-sm outline-none focus:border-primary/60"
+            />
             <input
               value={link}
               onChange={(e) => setLink(e.target.value)}
@@ -176,7 +186,7 @@ export function QrDialog({ onClose }: { onClose: () => void }) {
               type="button"
               className={btn}
               disabled={busy || !link.trim()}
-              onClick={() => void run({ link: link.trim(), image_url: image })}
+              onClick={() => void run({ title: title.trim() || null, link: link.trim(), image_url: image })}
             >
               {busy ? "Salvando..." : "Salvar"}
             </button>
