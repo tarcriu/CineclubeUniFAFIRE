@@ -63,7 +63,7 @@ export async function signInAsMember() {
     await supabase.auth.signOut();
     return {
       ok: false as const,
-      message: "Acesso negado. Faça seu login com o e-mail institucional.",
+      message: "Acesso negado. Faça seu login com o e-mail de membro.",
     };
   }
   return { ok: true as const };

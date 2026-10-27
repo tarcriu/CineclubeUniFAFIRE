@@ -725,7 +725,7 @@ function MemberLoginDialog({ onClose }: { onClose: () => void }) {
         </div>
 
         <p className="mt-4 text-sm text-muted-foreground">
-          Faça seu login com o e-mail institucional.
+          Faça seu login com o e-mail de membro.
         </p>
 
         {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
