@@ -1,9 +1,8 @@
-/// <reference types="bun" />
 import { describe, expect, mock, test } from "bun:test";
 
-const insert = mock(async (_row: unknown) => ({ error: null }));
-const eq = mock(async (_column: string, _id: string) => ({ error: null }));
-const update = mock((_row: unknown) => ({ eq }));
+const insert = mock(async (_row) => ({ error: null }));
+const eq = mock(async (_column, _id) => ({ error: null }));
+const update = mock((_row) => ({ eq }));
 mock.module("@/integrations/supabase/client", () => ({
   supabase: { from: () => ({ insert, update }) },
 }));
