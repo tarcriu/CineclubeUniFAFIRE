@@ -1,3 +1,4 @@
+/// <reference types="bun" />
 import { describe, expect, mock, test } from "bun:test";
 
 const insert = mock(async (_row: unknown) => ({ error: null }));
