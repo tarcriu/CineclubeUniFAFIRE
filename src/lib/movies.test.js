@@ -33,3 +33,25 @@ describe("session exhibition details", () => {
     expect(update.mock.calls.at(-1)?.[0]).toMatchObject({ session_time: null, session_location: null });
   });
 });
+describe("acervo genre filter", () => {
+  const movies = [
+    { id: "a", title: "A", genres: ["Terror", "Suspense"] },
+    { id: "b", title: "B", genres: ["Comédia"] },
+    { id: "c", title: "C", genres: [] },
+  ];
+  test("an empty selection keeps every movie", () => {
+    expect(filterMoviesByGenres(movies, []).map((m) => m.id)).toEqual(["a", "b", "c"]);
+  });
+  test("a selected genre keeps only the movies tagged with it", () => {
+    expect(filterMoviesByGenres(movies, ["Comédia"]).map((m) => m.id)).toEqual(["b"]);
+  });
+  test("several selected genres keep movies tagged with any of them", () => {
+    expect(filterMoviesByGenres(movies, ["Terror", "Comédia"]).map((m) => m.id)).toEqual(["a", "b"]);
+  });
+  test("genre matching ignores accents and letter case", () => {
+    expect(filterMoviesByGenres(movies, ["comedia", "sUSPENSe"]).map((m) => m.id)).toEqual(["a", "b"]);
+  });
+  test("only genres actually used by the acervo are offered", () => {
+    expect(genresInUse(movies)).toEqual(["Comédia", "Suspense", "Terror"]);
+  });
+});
