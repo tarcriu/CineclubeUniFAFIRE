@@ -11,6 +11,8 @@ export type Movie = {
   synopsis: string | null;
   image_url: string | null;
   session_date: string;
+  session_time: string | null;
+  session_location: string | null;
 };
 
 /** "Palestrante: X" or "Palestrantes: X, Y" depending on how many names were given. */
@@ -79,7 +81,7 @@ export function useMovies() {
     queryFn: async (): Promise<Movie[]> => {
       const { data, error } = await (supabase as any)
         .from("movies")
-        .select("id,title,director,speakers,genres,year,synopsis,image_url,session_date")
+        .select("id,title,director,speakers,genres,year,synopsis,image_url,session_date,session_time,session_location")
         .is("deleted_at", null)
         .order("session_date", { ascending: false });
       if (error) throw error;
@@ -99,7 +101,7 @@ export function useDeletedMovies(enabled: boolean) {
       await (supabase as any).rpc("purge_old_deleted_movies");
       const { data, error } = await (supabase as any)
         .from("movies")
-        .select("id,title,director,speakers,genres,year,synopsis,image_url,session_date,deleted_at")
+        .select("id,title,director,speakers,genres,year,synopsis,image_url,session_date,session_time,session_location,deleted_at")
         .not("deleted_at", "is", null)
         .order("deleted_at", { ascending: false });
       if (error) throw error;
@@ -138,6 +140,8 @@ export async function addMovie(input: {
   synopsis: string;
   imageUrl: string;
   sessionDate: string;
+  sessionTime: string;
+  sessionLocation: string;
 }) {
   const id = `${slugify(input.title)}-${Date.now().toString(36)}`;
   const { error } = await (supabase as any).from("movies").insert({
@@ -150,6 +154,8 @@ export async function addMovie(input: {
     synopsis: input.synopsis.trim() || null,
     image_url: input.imageUrl.trim() || null,
     session_date: input.sessionDate,
+    session_time: input.sessionTime.trim() || null,
+    session_location: input.sessionLocation.trim() || null,
   });
   if (error) {
     return { ok: false as const, message: "Não foi possível adicionar o filme." };
@@ -202,6 +208,8 @@ export async function updateMovie(
     synopsis: string;
     imageUrl: string;
     sessionDate: string;
+    sessionTime: string;
+    sessionLocation: string;
   },
 ) {
   const { error } = await (supabase as any)
@@ -215,6 +223,8 @@ export async function updateMovie(
       synopsis: input.synopsis.trim() || null,
       image_url: input.imageUrl.trim() || null,
       session_date: input.sessionDate,
+      session_time: input.sessionTime.trim() || null,
+      session_location: input.sessionLocation.trim() || null,
     })
     .eq("id", id);
   if (error) {

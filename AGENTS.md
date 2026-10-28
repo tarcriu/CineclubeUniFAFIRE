@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep session date, time and location in the movie record and shared session display, so editing and restoring movies preserve the same exhibition details.
