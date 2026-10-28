@@ -1,0 +1,1 @@
+ALTER TABLE public.movies ADD COLUMN session_time time without time zone, ADD COLUMN session_location text;

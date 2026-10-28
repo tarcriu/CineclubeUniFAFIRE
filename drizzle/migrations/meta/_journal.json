@@ -29,6 +29,13 @@
       "when": 1793103753660,
       "tag": "0003_member_email_list",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793223580502,
+      "tag": "0004_movies_session_time_location",
+      "breakpoints": true
     }
   ]
 }
