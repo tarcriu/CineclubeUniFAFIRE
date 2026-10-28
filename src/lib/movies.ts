@@ -32,6 +32,28 @@ export const GENRES = [
   "Suspense", "Terror",
 ];
 
+function normalizeGenre(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
+}
+
+/** Genres from GENRES that at least one movie actually uses, in GENRES order. */
+export function genresInUse(movies: Movie[]) {
+  const present = new Set(movies.flatMap((m) => m.genres ?? []).map(normalizeGenre));
+  return GENRES.filter((g) => present.has(normalizeGenre(g)));
+}
+
+/** Movies tagged with any of the selected genres; an empty selection keeps every movie. */
+export function filterMoviesByGenres(movies: Movie[], selected: string[]) {
+  if (!selected.length) return movies;
+  const wanted = new Set(selected.map(normalizeGenre));
+  return movies.filter((m) => (m.genres ?? []).some((g) => wanted.has(normalizeGenre(g))));
+}
+
+
 const MONTHS = [
   "janeiro",
   "fevereiro",
