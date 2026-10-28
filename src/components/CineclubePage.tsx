@@ -1249,12 +1249,83 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
             />
           </div>
 
-          {searching && Object.keys(acervoByYear).length === 0 && (
+          <div className="mt-3">
+            <button
+              type="button"
+              onClick={() => setGenreFilterOpen((v) => !v)}
+              aria-expanded={genreFilterOpen}
+              className="flex w-full items-center gap-3 rounded-md border border-border bg-secondary/60 px-3 py-2 transition-colors hover:border-primary/60"
+            >
+              <span className="text-[11px] uppercase tracking-[0.15em] text-muted-foreground">
+                Filtrar por gêneros
+              </span>
+              {selectedGenres.length > 0 && (
+                <span className="rounded-full bg-accent px-2 py-0.5 text-[11px] text-accent-foreground">
+                  {selectedGenres.length}
+                </span>
+              )}
+              <span className="h-px flex-1 bg-border" />
+              <ChevronDown
+                className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${genreFilterOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+
+            {genreFilterOpen ? (
+              <div className="mt-2 rounded-md border border-border bg-secondary/40 p-3">
+                {availableGenres.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">Nenhum gênero cadastrado ainda.</p>
+                ) : (
+                  <div className="flex flex-wrap gap-1.5">
+                    {availableGenres.map((g) => {
+                      const on = selectedGenres.includes(g);
+                      return (
+                        <button
+                          key={g}
+                          type="button"
+                          aria-pressed={on}
+                          onClick={() => toggleFilterGenre(g)}
+                          className={`rounded-full border px-3 py-1 text-xs transition-colors ${on ? "border-accent bg-accent text-accent-foreground" : "border-border text-muted-foreground hover:border-primary/60"}`}
+                        >
+                          {g}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+                {selectedGenres.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setSelectedGenres([])}
+                    className="mt-3 text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+                  >
+                    Limpar seleção
+                  </button>
+                )}
+              </div>
+            ) : selectedGenres.length > 0 ? (
+              <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                {selectedGenres.map((g) => (
+                  <button
+                    key={g}
+                    type="button"
+                    onClick={() => toggleFilterGenre(g)}
+                    aria-label={`Remover filtro ${g}`}
+                    className="flex items-center gap-1 rounded-full border border-primary/50 bg-background/60 px-2.5 py-0.5 text-[11px] text-foreground/85 transition-colors hover:border-primary"
+                  >
+                    {g}
+                    <X className="h-3 w-3" />
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          {filtering && Object.keys(acervoByYear).length === 0 && (
             <p className="mt-6 text-sm text-muted-foreground">Nenhum filme encontrado.</p>
           )}
 
           {Object.entries(acervoByYear).map(([year, items]) => {
-            const open = searching || openYears.has(year);
+            const open = filtering || openYears.has(year);
             return (
               <div key={year}>
                 <button

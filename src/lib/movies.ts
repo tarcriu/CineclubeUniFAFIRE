@@ -35,7 +35,7 @@ export const GENRES = [
 function normalizeGenre(value: string) {
   return value
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .trim()
     .toLowerCase();
 }
