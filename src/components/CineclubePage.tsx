@@ -182,6 +182,7 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
               <p className="text-[11px] tracking-[0.18em] text-foreground/80">
                 {formatSessionDate(session.session_date).toUpperCase()}
               </p>
+              <SessionDetails movie={session} />
               <h3 className="mt-1 font-display text-4xl italic">{session.title}</h3>
               <p className="mt-1 text-sm text-foreground/75">{credits(session)}</p>
               {speakersLabel(session) && (
@@ -198,6 +199,7 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
               <p className="text-[11px] tracking-[0.18em] text-muted-foreground">
                 {formatSessionDate(session.session_date).toUpperCase()}
               </p>
+              <SessionDetails movie={session} />
               <h3 className="mt-1 font-display text-4xl italic">{session.title}</h3>
               <p className="mt-1 text-sm text-foreground/75">{credits(session)}</p>
               {speakersLabel(session) && (
@@ -456,6 +458,19 @@ function GenreTags({ genres }: { genres?: string[] | null }) {
   );
 }
 
+function SessionDetails({ movie }: { movie: Movie }) {
+  return (
+    <>
+      {movie.session_time && (
+        <p className="mt-1 text-[13px] text-foreground/80">Horário: {movie.session_time.slice(0, 5)}</p>
+      )}
+      {movie.session_location && (
+        <p className="mt-1 break-words text-[13px] text-foreground/80">Local: {movie.session_location}</p>
+      )}
+    </>
+  );
+}
+
 function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void }) {
   const queryClient = useQueryClient();
   const editing = Boolean(movie);
@@ -467,6 +482,8 @@ function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void })
     setGenres((cur) => (cur.includes(g) ? cur.filter((x) => x !== g) : [...cur, g]));
   const [year, setYear] = useState(movie?.year ? String(movie.year) : "");
   const [sessionDate, setSessionDate] = useState(movie?.session_date ?? "");
+  const [sessionTime, setSessionTime] = useState(movie?.session_time?.slice(0, 5) ?? "");
+  const [sessionLocation, setSessionLocation] = useState(movie?.session_location ?? "");
   const [synopsis, setSynopsis] = useState(movie?.synopsis ?? "");
   const [imageUrl, setImageUrl] = useState(movie?.image_url ?? "");
   const [saving, setSaving] = useState(false);
@@ -499,6 +516,8 @@ function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void })
       synopsis,
       imageUrl,
       sessionDate,
+      sessionTime,
+      sessionLocation,
     };
     const result = movie ? await updateMovie(movie.id, payload) : await addMovie(payload);
     setSaving(false);
@@ -625,6 +644,32 @@ function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void })
               value={sessionDate}
               onChange={(e) => setSessionDate(e.target.value)}
               className={field}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="filme-horario" className={label}>
+              HORÁRIO DE EXIBIÇÃO
+            </label>
+            <input
+              id="filme-horario"
+              type="time"
+              value={sessionTime}
+              onChange={(e) => setSessionTime(e.target.value)}
+              className={field}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="filme-local" className={label}>
+              LOCAL DE EXIBIÇÃO
+            </label>
+            <input
+              id="filme-local"
+              value={sessionLocation}
+              onChange={(e) => setSessionLocation(e.target.value)}
+              className={field}
+              placeholder="Local de exibição"
             />
           </div>
 
@@ -832,6 +877,7 @@ function AcervoRow({
           <p className="mt-1 text-[13px] text-muted-foreground">
             {formatSessionDate(item.session_date)}
           </p>
+          <SessionDetails movie={item} />
           <GenreTags genres={item.genres} />
         </div>
         <div className="flex shrink-0 items-center gap-3">
