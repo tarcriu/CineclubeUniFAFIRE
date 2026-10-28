@@ -23,6 +23,8 @@ import {
   monthKey,
   restoreMovie,
   speakersLabel,
+  filterMoviesByGenres,
+  genresInUse,
   GENRES,
   updateMovie,
   useDeletedMovies,
@@ -1114,6 +1116,8 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
   const [restoreOpen, setRestoreOpen] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [genreFilterOpen, setGenreFilterOpen] = useState(false);
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 
   const memberMode = memberPage && isMember;
 
@@ -1133,11 +1137,13 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
 
   const filteredMovies = useMemo(() => {
     const term = normalize(search.trim());
-    if (!term) return movies;
-    return movies.filter((m) =>
-      normalize(`${m.title} ${m.director} ${m.year ?? ""}`).includes(term),
-    );
-  }, [movies, search]);
+    const found = term
+      ? movies.filter((m) =>
+          normalize(`${m.title} ${m.director} ${m.year ?? ""}`).includes(term),
+        )
+      : movies;
+    return filterMoviesByGenres(found, selectedGenres);
+  }, [movies, search, selectedGenres]);
 
   const acervoByYear = useMemo(() => {
     const groups: Record<string, Movie[]> = {};
@@ -1150,6 +1156,14 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
   }, [filteredMovies]);
 
   const searching = search.trim().length > 0;
+  const filtering = searching || selectedGenres.length > 0;
+  const availableGenres = useMemo(() => genresInUse(movies), [movies]);
+
+  function toggleFilterGenre(genre: string) {
+    setSelectedGenres((prev) =>
+      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre],
+    );
+  }
 
 
   function toggleYear(year: string) {

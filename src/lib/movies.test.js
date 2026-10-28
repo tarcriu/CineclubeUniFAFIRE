@@ -7,7 +7,7 @@ mock.module("@/integrations/supabase/client", () => ({
   supabase: { from: () => ({ insert, update }) },
 }));
 
-const { addMovie, updateMovie } = await import("./movies");
+const { addMovie, updateMovie, filterMoviesByGenres, genresInUse } = await import("./movies");
 const input = {
   title: "Filme teste", director: "Diretor", speakers: "", genres: [],
   year: null, synopsis: "", imageUrl: "", sessionDate: "2026-10-28",
