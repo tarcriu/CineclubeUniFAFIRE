@@ -402,7 +402,10 @@ function RateDialog({
             Data de exibição: {formatSessionDate(sessionDate)}
           </p>
           <SessionDetails
-            movie={{ session_time: sessionTime, session_location: sessionLocation }}
+            movie={{
+              session_time: sessionTime ?? null,
+              session_location: sessionLocation ?? null,
+            }}
           />
         </div>
 
