@@ -57,7 +57,7 @@ export function PublicQr() {
       rel="noopener noreferrer"
       className="flex flex-col items-center gap-2 transition-opacity hover:opacity-80"
     >
-      {qr.title && <span className="font-display text-xl italic">{qr.title}</span>}
+      {qr.title && <span className="font-display text-xl">{qr.title}</span>}
       <img src={src} alt="Código QR" className="h-40 w-40 rounded-md bg-white p-2" />
       <span className="text-sm text-muted-foreground">escaneie ou clique</span>
     </a>
@@ -116,7 +116,7 @@ export function QrDialog({ onClose }: { onClose: () => void }) {
         className="max-h-[85vh] w-full max-w-[420px] overflow-y-auto rounded-lg border border-border bg-card p-6"
       >
         <div className="flex items-start justify-between gap-4">
-          <h4 className="font-display text-2xl italic">Código QR</h4>
+          <h4 className="font-display text-2xl">Código QR</h4>
           <button type="button" onClick={onClose} aria-label="Fechar" className="text-muted-foreground hover:opacity-70">
             <X className="h-5 w-5" />
           </button>
@@ -124,7 +124,7 @@ export function QrDialog({ onClose }: { onClose: () => void }) {
 
         {src && (
           <div className="mt-4 flex flex-col items-center gap-1">
-            {qr?.title && <span className="font-display text-lg italic">{qr.title}</span>}
+            {qr?.title && <span className="font-display text-lg">{qr.title}</span>}
             <img src={src} alt="Código QR" className="h-32 w-32 rounded-md bg-white p-2" />
             <span className="text-[12px] text-muted-foreground">
               {qr?.visible ? "Exibido no site" : "Não exibido"}
