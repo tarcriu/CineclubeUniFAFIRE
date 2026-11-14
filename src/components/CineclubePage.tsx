@@ -70,7 +70,7 @@ function ConfirmDialog({
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-[420px] rounded-lg border border-border bg-card p-6"
       >
-        <h4 className="font-display text-2xl">{title}</h4>
+        <h4 className="font-display text-2xl italic">{title}</h4>
         <p className="mt-3 text-sm leading-relaxed text-foreground/80">{message}</p>
         <div className="mt-6 flex items-center justify-end gap-4">
           <button
@@ -181,7 +181,7 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
             />
             <div className="absolute inset-0 bg-gradient-to-t from-card via-card/45 to-transparent" />
             <div className="absolute bottom-0 left-0 p-6">
-              <h3 className="mt-1 font-display text-4xl">{session.title}</h3>
+              <h3 className="mt-1 font-display text-4xl italic">{session.title}</h3>
               <p className="mt-1 text-sm text-foreground/75">{credits(session)}</p>
               {speakersLabel(session) && (
                 <p className="mt-0.5 text-sm text-foreground/75">{speakersLabel(session)}</p>
@@ -194,7 +194,7 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
         <div className="p-6">
           {!session.image_url && (
             <div className="mb-4">
-              <h3 className="mt-1 font-display text-4xl">{session.title}</h3>
+              <h3 className="mt-1 font-display text-4xl italic">{session.title}</h3>
               <p className="mt-1 text-sm text-foreground/75">{credits(session)}</p>
               {speakersLabel(session) && (
                 <p className="mt-0.5 text-sm text-foreground/75">{speakersLabel(session)}</p>
@@ -347,7 +347,7 @@ function RateDialog({
         className="max-h-[85vh] w-full max-w-[520px] overflow-y-auto rounded-lg border border-border bg-card p-6"
       >
         <div className="flex items-start justify-between gap-4">
-          <h4 className="font-display text-2xl">{title}</h4>
+          <h4 className="font-display text-2xl italic">{title}</h4>
           <button
             type="button"
             onClick={onClose}
@@ -547,7 +547,7 @@ function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void })
         className="max-h-[85vh] w-full max-w-[560px] overflow-y-auto rounded-lg border border-border bg-card p-6"
       >
         <div className="flex items-start justify-between gap-4">
-          <h4 className="font-display text-2xl">
+          <h4 className="font-display text-2xl italic">
             {editing ? "Editar filme" : "Adicionar filme"}
           </h4>
 
@@ -759,7 +759,7 @@ function MemberLoginDialog({ onClose }: { onClose: () => void }) {
         className="w-full max-w-[420px] rounded-lg border border-border bg-card p-6"
       >
         <div className="flex items-start justify-between gap-4">
-          <h4 className="font-display text-2xl">Membro do cineclube</h4>
+          <h4 className="font-display text-2xl italic">Membro do cineclube</h4>
           <button
             type="button"
             onClick={onClose}
@@ -801,7 +801,7 @@ function AccessDeniedDialog({ onClose }: { onClose: () => void }) {
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-[420px] rounded-lg border border-border bg-card p-6 text-center"
       >
-        <h4 className="font-display text-2xl">Acesso negado</h4>
+        <h4 className="font-display text-2xl italic">Acesso negado</h4>
         <p className="mt-4 text-sm text-muted-foreground">
           Seu acesso foi negado, você não está usando o e-mail do cineclube.
         </p>
@@ -868,9 +868,9 @@ function AcervoRow({
         className="flex w-full items-center justify-between gap-4 py-5 text-left"
       >
         <div>
-          <h4 className="font-display text-xl">
+          <h4 className="font-display text-xl italic">
             {item.title}
-            <span className="ml-2 hidden font-sans text-[13px] not-text-muted-foreground sm:inline">
+            <span className="ml-2 hidden font-sans text-[13px] not-italic text-muted-foreground sm:inline">
               {credits(item)}
             </span>
           </h4>
@@ -1057,7 +1057,7 @@ function RestoreMovieDialog({ onClose }: { onClose: () => void }) {
         className="max-h-[85vh] w-full max-w-[520px] overflow-y-auto rounded-lg border border-border bg-card p-6"
       >
         <div className="flex items-start justify-between gap-4">
-          <h4 className="font-display text-2xl">Recuperar filme excluído</h4>
+          <h4 className="font-display text-2xl italic">Recuperar filme excluído</h4>
           <button
             type="button"
             onClick={onClose}
@@ -1216,7 +1216,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
             <span className="sm:hidden">
               <ThemeToggle />
             </span>
-            <h2 className="font-display text-2xl">Este mês</h2>
+            <h2 className="font-display text-2xl italic">Este mês</h2>
             <span className="text-[11px] tracking-[0.15em] text-muted-foreground">
               {monthLabel}
             </span>
@@ -1232,7 +1232,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
 
         <section className="pt-20">
           <div className="flex items-center gap-4">
-            <h2 className="font-display text-2xl">Acervo</h2>
+            <h2 className="font-display text-2xl italic">Acervo</h2>
             <span className="h-px flex-1 bg-border" />
           </div>
           <div className="relative mt-3">
@@ -1331,7 +1331,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
                   onClick={() => toggleYear(year)}
                   className="mt-8 flex w-full items-center gap-4"
                 >
-                  <h3 className="font-display text-lg text-primary">{year}</h3>
+                  <h3 className="font-display text-lg italic text-primary">{year}</h3>
                   <span className="h-px flex-1 bg-border" />
                   <ChevronDown
                     className={`h-4 w-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
