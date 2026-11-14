@@ -301,12 +301,18 @@ function RateDialog({
   title,
   synopsis,
   imageUrl,
+  sessionDate,
+  sessionTime,
+  sessionLocation,
   onClose,
 }: {
   movieId: string;
   title: string;
   synopsis?: string | null;
   imageUrl?: string | null;
+  sessionDate: string;
+  sessionTime?: string | null;
+  sessionLocation?: string | null;
   onClose: () => void;
 }) {
   const queryClient = useQueryClient();
@@ -391,6 +397,18 @@ function RateDialog({
           </div>
         )}
 
+        <div className="mt-4 border-t border-border pt-3">
+          <p className="text-[13px] text-foreground/80">
+            Data de exibição: {formatSessionDate(sessionDate)}
+          </p>
+          <SessionDetails
+            movie={{
+              session_time: sessionTime ?? null,
+              session_location: sessionLocation ?? null,
+            }}
+          />
+        </div>
+
         <form className="mt-5" onSubmit={handleSubmit}>
           <p className="text-[11px] tracking-[0.12em] text-muted-foreground">
             SUA NOTA <span className="text-primary">*</span>
@@ -460,7 +478,11 @@ function GenreTags({ genres }: { genres?: string[] | null }) {
   );
 }
 
-function SessionDetails({ movie }: { movie: Movie }) {
+function SessionDetails({
+  movie,
+}: {
+  movie: { session_time?: string | null; session_location?: string | null };
+}) {
   return (
     <>
       {movie.session_time && (
@@ -879,7 +901,6 @@ function AcervoRow({
           <p className="mt-1 text-[13px] text-muted-foreground">
             {formatSessionDate(item.session_date)}
           </p>
-          <SessionDetails movie={item} />
           <GenreTags genres={item.genres} />
         </div>
         <div className="flex shrink-0 items-center gap-3">
@@ -918,6 +939,9 @@ function AcervoRow({
               title={item.title}
               synopsis={item.synopsis}
               imageUrl={item.image_url}
+              sessionDate={item.session_date}
+              sessionTime={item.session_time}
+              sessionLocation={item.session_location}
               onClose={() => setRateOpen(false)}
             />
           )}
