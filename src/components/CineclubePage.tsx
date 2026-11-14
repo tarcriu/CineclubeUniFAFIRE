@@ -210,8 +210,8 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
           )}
 
           <div className="mt-4">
-            <p className="text-[11px] tracking-[0.18em] text-muted-foreground">
-              {formatSessionDate(session.session_date).toUpperCase()}
+            <p className="text-[13px] text-muted-foreground">
+              {formatSessionDate(session.session_date)}
             </p>
             <SessionDetails movie={session} />
           </div>
@@ -463,10 +463,10 @@ function SessionDetails({ movie }: { movie: Movie }) {
   return (
     <>
       {movie.session_time && (
-        <p className="mt-1 text-[13px] text-foreground/80">Horário: {movie.session_time.slice(0, 5)}</p>
+        <p className="mt-1 text-[13px] text-muted-foreground">Horário: {movie.session_time.slice(0, 5)}</p>
       )}
       {movie.session_location && (
-        <p className="mt-1 break-words text-[13px] text-foreground/80">Local: {movie.session_location}</p>
+        <p className="mt-1 break-words text-[13px] text-muted-foreground">Local: {movie.session_location}</p>
       )}
     </>
   );
