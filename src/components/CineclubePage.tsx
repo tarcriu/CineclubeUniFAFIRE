@@ -181,10 +181,6 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
             />
             <div className="absolute inset-0 bg-gradient-to-t from-card via-card/45 to-transparent" />
             <div className="absolute bottom-0 left-0 p-6">
-              <p className="text-[11px] tracking-[0.18em] text-foreground/80">
-                {formatSessionDate(session.session_date).toUpperCase()}
-              </p>
-              <SessionDetails movie={session} />
               <h3 className="mt-1 font-display text-4xl italic">{session.title}</h3>
               <p className="mt-1 text-sm text-foreground/75">{credits(session)}</p>
               {speakersLabel(session) && (
@@ -198,10 +194,6 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
         <div className="p-6">
           {!session.image_url && (
             <div className="mb-4">
-              <p className="text-[11px] tracking-[0.18em] text-muted-foreground">
-                {formatSessionDate(session.session_date).toUpperCase()}
-              </p>
-              <SessionDetails movie={session} />
               <h3 className="mt-1 font-display text-4xl italic">{session.title}</h3>
               <p className="mt-1 text-sm text-foreground/75">{credits(session)}</p>
               {speakersLabel(session) && (
@@ -216,6 +208,13 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
               {session.synopsis}
             </p>
           )}
+
+          <div className="mt-4">
+            <p className="text-[11px] tracking-[0.18em] text-muted-foreground">
+              {formatSessionDate(session.session_date).toUpperCase()}
+            </p>
+            <SessionDetails movie={session} />
+          </div>
 
           {memberMode ? (
             <button
@@ -879,7 +878,6 @@ function AcervoRow({
           <p className="mt-1 text-[13px] text-muted-foreground">
             {formatSessionDate(item.session_date)}
           </p>
-          <SessionDetails movie={item} />
           <GenreTags genres={item.genres} />
         </div>
         <div className="flex shrink-0 items-center gap-3">
