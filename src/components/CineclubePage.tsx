@@ -179,7 +179,7 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
               alt={session.title}
               className="h-[380px] w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-card via-card/45 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-card via-card/45 to-transparent [.light_from-card via-card/45 to-transparent]:from-card/75 [.light_from-card via-card/45 to-transparent]:via-card/10" />
             <div className="absolute bottom-0 left-0 p-6">
               <h3 className="mt-1 font-display text-4xl italic">{session.title}</h3>
               <p className="mt-1 text-sm text-foreground/75">{credits(session)}</p>
