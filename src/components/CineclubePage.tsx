@@ -475,7 +475,11 @@ function GenreTags({ genres }: { genres?: string[] | null }) {
   );
 }
 
-function SessionDetails({ movie }: { movie: Pick<Movie, "session_time" | "session_location"> }) {
+function SessionDetails({
+  movie,
+}: {
+  movie: { session_time?: string | null; session_location?: string | null };
+}) {
   return (
     <>
       {movie.session_time && (
