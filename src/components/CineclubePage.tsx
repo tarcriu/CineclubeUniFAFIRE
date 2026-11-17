@@ -5,6 +5,7 @@ import { ChevronDown, Search, Star, Trash2, X } from "lucide-react";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { PublicQr, QrDialog } from "@/components/QrCode";
+import { ColorsDialog, SiteColorApplier } from "@/components/SiteColors";
 import {
   formatReviewDate,
   getDeviceId,
@@ -1113,6 +1114,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
   const [addOpen, setAddOpen] = useState(false);
   const [restoreOpen, setRestoreOpen] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
+  const [colorsOpen, setColorsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [genreFilterOpen, setGenreFilterOpen] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
@@ -1420,6 +1422,16 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
             </button>
           )}
 
+          {memberMode && (
+            <button
+              type="button"
+              onClick={() => setColorsOpen(true)}
+              className="rounded-md border border-border px-5 py-3 text-sm font-medium transition-opacity hover:opacity-80"
+            >
+              Editar cores
+            </button>
+          )}
+
           <PublicQr />
         </div>
       </footer>
@@ -1427,6 +1439,8 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
       {addOpen && <MovieDialog onClose={() => setAddOpen(false)} />}
       {restoreOpen && <RestoreMovieDialog onClose={() => setRestoreOpen(false)} />}
       {qrOpen && <QrDialog onClose={() => setQrOpen(false)} />}
+      {colorsOpen && <ColorsDialog onClose={() => setColorsOpen(false)} />}
+      <SiteColorApplier />
       {loginOpen && !denied && <MemberLoginDialog onClose={() => setLoginOpen(false)} />}
       {denied && <AccessDeniedDialog onClose={clearDenied} />}
     </div>

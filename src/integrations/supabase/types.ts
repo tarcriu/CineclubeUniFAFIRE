@@ -122,6 +122,24 @@ export type Database = {
         }
         Relationships: []
       }
+      site_theme: {
+        Row: {
+          color: string | null
+          id: number
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          id?: number
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          id?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       reviews_public: {
