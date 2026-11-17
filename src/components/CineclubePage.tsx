@@ -783,7 +783,7 @@ function MemberLoginDialog({ onClose }: { onClose: () => void }) {
           onClick={() => void handleLogin()}
           className="mt-6 w-full rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
         >
-          {loading ? "Entrando..." : "Entrar com o Google"}
+          {loading ? "Entrando..." : "Logar com o e-mail"}
         </button>
       </div>
     </div>

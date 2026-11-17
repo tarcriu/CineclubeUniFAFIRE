@@ -5,6 +5,7 @@ import { lovable } from "@/integrations/lovable";
 export const MEMBER_EMAILS = [
   "cineclube@unifafire.edu.br",
   "dionisio202527808@grad.unifafire.edu.br",
+  "dionisio.ai@tutamail.com",
 ];
 
 export function isMemberEmail(email: string | null | undefined) {
@@ -51,7 +52,7 @@ export async function signInAsMember() {
 
 
   if (result.error) {
-    return { ok: false as const, message: "Não foi possível entrar com o Google." };
+    return { ok: false as const, message: "Não foi possível entrar." };
   }
   if (result.redirected) {
     return { ok: true as const, pending: true as const };
