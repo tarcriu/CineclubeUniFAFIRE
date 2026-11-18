@@ -43,13 +43,6 @@
       "when": 1794936420424,
       "tag": "0005_site_theme",
       "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1794936625174,
-      "tag": "0006_member_email_tutamail",
-      "breakpoints": true
     }
   ]
 }

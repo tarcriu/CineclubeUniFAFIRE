@@ -5,7 +5,6 @@ import { lovable } from "@/integrations/lovable";
 export const MEMBER_EMAILS = [
   "cineclube@unifafire.edu.br",
   "dionisio202527808@grad.unifafire.edu.br",
-  "dionisio.ai@tutamail.com",
 ];
 
 export function isMemberEmail(email: string | null | undefined) {
@@ -52,7 +51,7 @@ export async function signInAsMember() {
 
 
   if (result.error) {
-    return { ok: false as const, message: "Não foi possível entrar." };
+    return { ok: false as const, message: "Não foi possível entrar com o Google." };
   }
   if (result.redirected) {
     return { ok: true as const, pending: true as const };
@@ -70,27 +69,6 @@ export async function signInAsMember() {
   return { ok: true as const };
 }
 
-
-export async function signInWithMagicLink(email: string) {
-  const clean = email.trim().toLowerCase();
-  if (!isMemberEmail(clean)) {
-    return {
-      ok: false as const,
-      message: "Acesso negado. Faça seu login com o e-mail de membro.",
-    };
-  }
-  const { error } = await supabase.auth.signInWithOtp({
-    email: clean,
-    options: {
-      emailRedirectTo: `${window.location.origin}/logado`,
-      shouldCreateUser: true,
-    },
-  });
-  if (error) {
-    return { ok: false as const, message: "Não foi possível enviar o link de acesso." };
-  }
-  return { ok: true as const };
-}
 
 export async function signOutMember() {
   await supabase.auth.signOut();

@@ -34,7 +34,7 @@ import {
   type Movie,
 } from "@/lib/movies";
 
-import { deleteReview, signInAsMember, signInWithMagicLink, signOutMember, useMember } from "@/lib/member";
+import { deleteReview, signInAsMember, signOutMember, useMember } from "@/lib/member";
 
 import cineclubeLogo from "@/assets/cineclube-logo.png.asset.json";
 import unifafireLogo from "@/assets/unifafire.png.asset.json";
@@ -732,9 +732,6 @@ function MovieDialog({ movie, onClose }: { movie?: Movie; onClose: () => void })
 function MemberLoginDialog({ onClose }: { onClose: () => void }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [sendingLink, setSendingLink] = useState(false);
-  const [linkSent, setLinkSent] = useState(false);
-  const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
   async function handleLogin() {
@@ -748,18 +745,6 @@ function MemberLoginDialog({ onClose }: { onClose: () => void }) {
     }
     onClose();
     void navigate({ to: "/logado" });
-  }
-
-  async function handleMagicLink() {
-    setError("");
-    setSendingLink(true);
-    const result = await signInWithMagicLink(email);
-    setSendingLink(false);
-    if (!result.ok) {
-      setError(result.message);
-      return;
-    }
-    setLinkSent(true);
   }
 
 
@@ -798,7 +783,7 @@ function MemberLoginDialog({ onClose }: { onClose: () => void }) {
           onClick={() => void handleLogin()}
           className="mt-6 w-full rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
         >
-          {loading ? "Entrando..." : "Logar com o e-mail"}
+          {loading ? "Entrando..." : "Entrar com o Google"}
         </button>
       </div>
     </div>
