@@ -25,3 +25,23 @@ export function hueShiftFor(color: string | null | undefined): number {
   if (d < -180) d += 360;
   return Math.round(d);
 }
+
+const CUSTOM_VARS = ["--primary", "--accent", "--ring", "--chart-1", "--sidebar-primary", "--sidebar-ring"];
+const FG_VARS = ["--primary-foreground", "--accent-foreground", "--sidebar-primary-foreground"];
+
+/** Dark or light text that reads well on top of the given color. */
+export function contrastTextFor(hex: string): string {
+  const n = parseInt(hex.slice(1), 16);
+  const lin = (c: number) => { c /= 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+  const L = 0.2126 * lin((n >> 16) & 255) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255);
+  return L > 0.4 ? "#141414" : "#fafafa";
+}
+
+/** Applies a chosen color exactly as picked; null restores the original greens. */
+export function applySiteColor(color: string | null | undefined) {
+  const s = document.documentElement.style;
+  const valid = !!color && /^#[0-9a-f]{6}$/i.test(color);
+  s.setProperty("--hue-shift", String(hueShiftFor(valid ? color : null)));
+  for (const v of CUSTOM_VARS) valid ? s.setProperty(v, color!) : s.removeProperty(v);
+  for (const v of FG_VARS) valid ? s.setProperty(v, contrastTextFor(color!)) : s.removeProperty(v);
+}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { hueShiftFor } from "@/lib/siteColors";
+import { applySiteColor } from "@/lib/siteColors";
 
 const PRESETS = [
   { label: "Amarelo", color: "#f5c800" },
@@ -29,7 +29,7 @@ export function useSiteColor() {
 export function SiteColorApplier() {
   const { data } = useSiteColor();
   useEffect(() => {
-    document.documentElement.style.setProperty("--hue-shift", String(hueShiftFor(data)));
+    applySiteColor(data);
   }, [data]);
   return null;
 }
@@ -42,11 +42,11 @@ export function ColorsDialog({ onClose }: { onClose: () => void }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    document.documentElement.style.setProperty("--hue-shift", String(hueShiftFor(color)));
+    applySiteColor(color);
   }, [color]);
 
   const close = () => {
-    document.documentElement.style.setProperty("--hue-shift", String(hueShiftFor(data)));
+    applySiteColor(data);
     onClose();
   };
 
@@ -59,7 +59,7 @@ export function ColorsDialog({ onClose }: { onClose: () => void }) {
     setBusy(false);
     if (error) return setError("Não foi possível salvar as cores.");
     await qc.invalidateQueries({ queryKey: ["site-theme"] });
-    document.documentElement.style.setProperty("--hue-shift", String(hueShiftFor(value)));
+    applySiteColor(value);
     onClose();
   };
 
