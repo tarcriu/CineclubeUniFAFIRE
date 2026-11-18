@@ -71,6 +71,27 @@ export async function signInAsMember() {
 }
 
 
+export async function signInWithMagicLink(email: string) {
+  const clean = email.trim().toLowerCase();
+  if (!isMemberEmail(clean)) {
+    return {
+      ok: false as const,
+      message: "Acesso negado. Faça seu login com o e-mail de membro.",
+    };
+  }
+  const { error } = await supabase.auth.signInWithOtp({
+    email: clean,
+    options: {
+      emailRedirectTo: `${window.location.origin}/logado`,
+      shouldCreateUser: true,
+    },
+  });
+  if (error) {
+    return { ok: false as const, message: "Não foi possível enviar o link de acesso." };
+  }
+  return { ok: true as const };
+}
+
 export async function signOutMember() {
   await supabase.auth.signOut();
 }
