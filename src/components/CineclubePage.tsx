@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, Search, Star, Trash2, X } from "lucide-react";
+import { ChevronDown, Search, Share2, Star, Trash2, X } from "lucide-react";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { PublicQr, QrDialog } from "@/components/QrCode";
@@ -273,13 +273,24 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
 
               {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
 
-              <button
-                type="submit"
-                disabled={sending}
-                className="mt-6 rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
-              >
-                {sending ? "Enviando..." : "Enviar avaliação"}
-              </button>
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+                >
+                  {sending ? "Enviando..." : "Enviar avaliação"}
+                </button>
+                <a
+                  href={whatsappShareUrl(session)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-md border border-accent px-5 py-3 text-sm font-medium text-accent transition-colors hover:bg-accent hover:text-accent-foreground"
+                >
+                  <Share2 className="h-4 w-4" />
+                  Compartilhar no WhatsApp
+                </a>
+              </div>
             </form>
           )}
         </div>
@@ -445,6 +456,15 @@ function RateDialog({
       </div>
     </div>
   );
+}
+
+function whatsappShareUrl(m: Movie) {
+  const lines = [`🎬 Cineclube UniFAFIRE: *${m.title}*`];
+  if (m.session_date) lines.push(`📅 ${formatSessionDate(m.session_date).toLowerCase()}`);
+  if (m.session_time) lines.push(`🕒 ${m.session_time.slice(0, 5)}`);
+  if (m.session_location) lines.push(`📍 ${m.session_location}`);
+  lines.push(typeof window !== "undefined" ? window.location.origin : "https://cineclubeunifafire.lovable.app");
+  return `https://wa.me/?text=${encodeURIComponent(lines.join("\n"))}`;
 }
 
 function GenreTags({ genres }: { genres?: string[] | null }) {
