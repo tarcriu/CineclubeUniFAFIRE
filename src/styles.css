@@ -169,6 +169,15 @@
   filter: hue-rotate(calc(var(--hue-shift) * 1deg));
 }
 
+/* Chosen color: paint logos in exactly that color using the image as a mask. */
+.custom-color.light .logo-light {
+  filter: none;
+  background-color: var(--primary);
+  object-position: -99999px 0;
+  -webkit-mask: var(--logo-src) center / contain no-repeat;
+  mask: var(--logo-src) center / contain no-repeat;
+}
+
 .light .logo-dark {
   display: none;
 }

@@ -1185,7 +1185,8 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
               alt="Cine Clube"
               className="logo-dark h-24 w-auto opacity-70"
             />
-            <img src={cineclubeLogoGreen.url} alt="Cine Clube" className="logo-light h-24 w-auto" />
+            <img src={cineclubeLogoGreen.url}
+              style={{ "--logo-src": `url(${cineclubeLogoGreen.url})` } as React.CSSProperties} alt="Cine Clube" className="logo-light h-24 w-auto" />
             <span className="h-10 w-px bg-border" />
             <img
               src={unifafireLogo.url}
@@ -1195,6 +1196,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
             />
             <img
               src={unifafireLogoGreen.url}
+              style={{ "--logo-src": `url(${unifafireLogoGreen.url})` } as React.CSSProperties}
               alt="UniFAFIRE"
               className="logo-light h-8 w-auto sm:h-12"
             />
@@ -1368,7 +1370,8 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
             className="flex items-center gap-3 text-sm text-muted-foreground transition-opacity hover:opacity-80"
           >
             <img src={instagramGray.url} alt="Instagram" className="logo-dark h-7 w-7" />
-            <img src={instagramGreen.url} alt="Instagram" className="logo-light h-7 w-7" />
+            <img src={instagramGreen.url}
+              style={{ "--logo-src": `url(${instagramGreen.url})` } as React.CSSProperties} alt="Instagram" className="logo-light h-7 w-7" />
             <span>@cineclube.unifafire</span>
           </a>
           {isMember ? (

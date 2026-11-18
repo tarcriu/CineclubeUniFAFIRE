@@ -41,6 +41,7 @@ export function contrastTextFor(hex: string): string {
 export function applySiteColor(color: string | null | undefined) {
   const s = document.documentElement.style;
   const valid = !!color && /^#[0-9a-f]{6}$/i.test(color);
+  document.documentElement.classList.toggle("custom-color", valid);
   s.setProperty("--hue-shift", String(hueShiftFor(valid ? color : null)));
   for (const v of CUSTOM_VARS) valid ? s.setProperty(v, color!) : s.removeProperty(v);
   for (const v of FG_VARS) valid ? s.setProperty(v, contrastTextFor(color!)) : s.removeProperty(v);
