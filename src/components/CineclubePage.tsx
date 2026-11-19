@@ -277,7 +277,7 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
                 <button
                   type="submit"
                   disabled={sending}
-                  className="rounded-md bg-accent px-5 py-3 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+                  className="inline-flex h-11 items-center justify-center rounded-md bg-accent px-5 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
                 >
                   {sending ? "Enviando..." : "Enviar avaliação"}
                 </button>
@@ -285,7 +285,7 @@ function SessionCard({ session, memberMode }: { session: Movie; memberMode: bool
                   href={whatsappShareUrl(session)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-md border border-accent px-5 py-3 text-sm font-medium text-accent transition-colors hover:bg-accent hover:text-accent-foreground"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-accent px-5 text-sm font-medium text-accent transition-colors hover:bg-accent hover:text-accent-foreground"
                 >
                   <Share2 className="h-4 w-4" />
                   Compartilhar no WhatsApp
