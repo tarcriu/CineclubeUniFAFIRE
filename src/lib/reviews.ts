@@ -79,3 +79,30 @@ export function formatReviewDate(iso: string) {
     .toLocaleDateString("pt-BR", { day: "numeric", month: "short", year: "numeric" })
     .replace(".", "");
 }
+
+export function useReviewLikes() {
+  const deviceId = getDeviceId();
+  return useQuery({
+    queryKey: ["review-likes", deviceId],
+    queryFn: async () => {
+      const sb = supabase as any;
+      const [counts, mine] = await Promise.all([
+        sb.rpc("review_like_counts"),
+        deviceId ? sb.rpc("my_liked_reviews", { _device_id: deviceId }) : { data: [] },
+      ]);
+      if (counts.error) throw counts.error;
+      const map: Record<string, number> = {};
+      for (const r of counts.data ?? []) map[r.review_id] = Number(r.likes);
+      const liked = new Set<string>(((mine.data ?? []) as any[]).map((x) => (typeof x === "string" ? x : x.my_liked_reviews)));
+      return { counts: map, liked };
+    },
+  });
+}
+
+export async function toggleReviewLike(reviewId: string) {
+  const { error } = await (supabase as any).rpc("toggle_review_like", {
+    _review_id: reviewId,
+    _device_id: getDeviceId(),
+  });
+  return !error;
+}

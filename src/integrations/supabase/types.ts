@@ -65,6 +65,39 @@ export type Database = {
         }
         Relationships: []
       }
+      review_likes: {
+        Row: {
+          created_at: string
+          device_id: string
+          review_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_id: string
+          review_id: string
+        }
+        Update: {
+          created_at?: string
+          device_id?: string
+          review_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_likes_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "review_likes_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reviews: {
         Row: {
           comment: string | null
@@ -176,7 +209,19 @@ export type Database = {
         Returns: boolean
       }
       is_cineclube_member: { Args: never; Returns: boolean }
+      my_liked_reviews: { Args: { _device_id: string }; Returns: string[] }
       purge_old_deleted_movies: { Args: never; Returns: undefined }
+      review_like_counts: {
+        Args: never
+        Returns: {
+          likes: number
+          review_id: string
+        }[]
+      }
+      toggle_review_like: {
+        Args: { _device_id: string; _review_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never

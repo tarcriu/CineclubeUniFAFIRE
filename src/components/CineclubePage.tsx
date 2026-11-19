@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, Search, Share2, Star, Trash2, X } from "lucide-react";
+import { ChevronDown, Heart, Search, Share2, Star, Trash2, X } from "lucide-react";
+import { toggleReviewLike, useReviewLikes } from "@/lib/reviews";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { PublicQr, QrDialog } from "@/components/QrCode";
@@ -995,9 +996,12 @@ function AcervoRow({
                     const name = r.name?.trim() || "Anônimo";
                     return (
                       <li key={r.id ?? i} className="flex gap-3">
-                        <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-secondary text-[12px] text-muted-foreground">
-                          {name.charAt(0).toUpperCase()}
-                        </span>
+                        <div className="flex shrink-0 flex-col items-center gap-1">
+                          <span className="mt-0.5 flex h-7 w-7 items-center justify-center rounded-full bg-secondary text-[12px] text-muted-foreground">
+                            {name.charAt(0).toUpperCase()}
+                          </span>
+                          {r.id && <LikeButton reviewId={r.id} />}
+                        </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                             <span className="text-sm text-foreground/90">{name}</span>
@@ -1467,5 +1471,31 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
       {loginOpen && !denied && <MemberLoginDialog onClose={() => setLoginOpen(false)} />}
       {denied && <AccessDeniedDialog onClose={clearDenied} />}
     </div>
+  );
+}
+
+function LikeButton({ reviewId }: { reviewId: string }) {
+  const qc = useQueryClient();
+  const { data } = useReviewLikes();
+  const [busy, setBusy] = useState(false);
+  const liked = data?.liked.has(reviewId) ?? false;
+  const count = data?.counts[reviewId] ?? 0;
+  return (
+    <button
+      type="button"
+      disabled={busy}
+      aria-label={liked ? "Remover curtida" : "Curtir avaliação"}
+      aria-pressed={liked}
+      onClick={async () => {
+        setBusy(true);
+        await toggleReviewLike(reviewId);
+        await qc.invalidateQueries({ queryKey: ["review-likes"] });
+        setBusy(false);
+      }}
+      className={`flex items-center gap-0.5 text-[11px] transition-colors ${liked ? "text-primary" : "text-muted-foreground hover:text-primary"}`}
+    >
+      <Heart className="h-3.5 w-3.5" fill={liked ? "currentColor" : "none"} />
+      {count > 0 && <span>{count}</span>}
+    </button>
   );
 }

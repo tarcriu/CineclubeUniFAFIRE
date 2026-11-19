@@ -5,9 +5,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Cineclube UniFAFIRE" },
-      { name: "description", content: "Avalie e discuta as sessões do mês." },
+      { name: "description", content: "Cineclube da UniFAFIRE no Recife: veja os filmes do mês, horários, local e avalie as sessões." },
       { property: "og:title", content: "Cineclube UniFAFIRE" },
-      { property: "og:description", content: "Avalie e discuta as sessões do mês." },
+      { property: "og:description", content: "Cineclube da UniFAFIRE no Recife: veja os filmes do mês, horários, local e avalie as sessões." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
