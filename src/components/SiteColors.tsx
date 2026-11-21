@@ -25,6 +25,25 @@ export function useSiteColor() {
   });
 }
 
+export function useSemesterFinished() {
+  return useQuery({
+    queryKey: ["semester-finished"],
+    queryFn: async (): Promise<boolean> => {
+      const { data, error } = await (supabase as any)
+        .from("site_theme").select("semester_finished").eq("id", 1).maybeSingle();
+      if (error) throw error;
+      return !!data?.semester_finished;
+    },
+  });
+}
+
+export async function setSemesterFinished(finished: boolean) {
+  const { error } = await (supabase as any)
+    .from("site_theme")
+    .upsert({ id: 1, semester_finished: finished, updated_at: new Date().toISOString() });
+  if (error) throw error;
+}
+
 /** Applies the saved color to the whole site. */
 export function SiteColorApplier() {
   const { data } = useSiteColor();

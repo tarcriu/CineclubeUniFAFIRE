@@ -159,16 +159,19 @@ export type Database = {
         Row: {
           color: string | null
           id: number
+          semester_finished: boolean
           updated_at: string
         }
         Insert: {
           color?: string | null
           id?: number
+          semester_finished?: boolean
           updated_at?: string
         }
         Update: {
           color?: string | null
           id?: number
+          semester_finished?: boolean
           updated_at?: string
         }
         Relationships: []

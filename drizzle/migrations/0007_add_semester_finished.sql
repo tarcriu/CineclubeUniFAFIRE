@@ -1,0 +1,2 @@
+ALTER TABLE public.site_theme ADD COLUMN semester_finished boolean NOT NULL DEFAULT false;
+COMMENT ON COLUMN public.site_theme.semester_finished IS 'Quando true, o site mostra o aviso de semestre finalizado no lugar do filme do mês.';

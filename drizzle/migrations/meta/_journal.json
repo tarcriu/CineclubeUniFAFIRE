@@ -50,6 +50,13 @@
       "when": 1795129248790,
       "tag": "0006_review_likes",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1795222200090,
+      "tag": "0007_add_semester_finished",
+      "breakpoints": true
     }
   ]
 }

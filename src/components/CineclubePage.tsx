@@ -6,7 +6,7 @@ import { toggleReviewLike, useReviewLikes } from "@/lib/reviews";
 import { StarsDisplay, StarsInput } from "@/components/Stars";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { PublicQr, QrDialog } from "@/components/QrCode";
-import { ColorsDialog, SiteColorApplier } from "@/components/SiteColors";
+import { ColorsDialog, SiteColorApplier, useSemesterFinished, setSemesterFinished } from "@/components/SiteColors";
 import {
   formatReviewDate,
   getDeviceId,
@@ -1130,6 +1130,7 @@ function RestoreMovieDialog({ onClose }: { onClose: () => void }) {
 
 export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) {
   const navigate = useNavigate();
+  const qc = useQueryClient();
   const { data: dbReviews = [] } = useReviews();
   const { data: movies = [] } = useMovies();
   const { email: memberEmail, isMember, denied, clearDenied } = useMember();
@@ -1139,6 +1140,9 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
   const [restoreOpen, setRestoreOpen] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
   const [colorsOpen, setColorsOpen] = useState(false);
+  const [semesterConfirmOpen, setSemesterConfirmOpen] = useState(false);
+  const [semesterBusy, setSemesterBusy] = useState(false);
+  const { data: semesterFinished = false } = useSemesterFinished();
   const [search, setSearch] = useState("");
   const [genreFilterOpen, setGenreFilterOpen] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
@@ -1148,7 +1152,7 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
 
 
   const currentMonth = movies[0] ? monthKey(movies[0].session_date) : null;
-  const sessions = currentMonth
+  const sessions = !semesterFinished && currentMonth
     ? movies.filter((m) => monthKey(m.session_date) === currentMonth)
     : [];
   const monthLabel = movies[0] ? formatMonthLabel(movies[0].session_date) : "";
@@ -1244,18 +1248,29 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
             <span className="sm:hidden">
               <ThemeToggle />
             </span>
-            <h2 className="font-display text-2xl italic">Este mês</h2>
-            <span className="text-[11px] tracking-[0.15em] text-muted-foreground">
-              {monthLabel}
-            </span>
+            <h2 className="font-display text-2xl italic">
+              {semesterFinished ? "Semestre finalizado" : "Este mês"}
+            </h2>
+            {!semesterFinished && (
+              <span className="text-[11px] tracking-[0.15em] text-muted-foreground">
+                {monthLabel}
+              </span>
+            )}
             <span className="h-px flex-1 bg-border" />
           </div>
 
-          <div className="mt-6 space-y-12">
-            {sessions.map((s) => (
-              <SessionCard key={s.id} session={s} memberMode={memberMode} />
-            ))}
-          </div>
+          {semesterFinished ? (
+            <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+              Obrigado por acompanharem mais um semestre do nosso cineclube, vemos
+              vocês semestre que vem!
+            </p>
+          ) : (
+            <div className="mt-6 space-y-12">
+              {sessions.map((s) => (
+                <SessionCard key={s.id} session={s} memberMode={memberMode} />
+              ))}
+            </div>
+          )}
         </section>
 
         <section className="pt-20">
@@ -1459,6 +1474,16 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
             </button>
           )}
 
+          {memberMode && (
+            <button
+              type="button"
+              onClick={() => setSemesterConfirmOpen(true)}
+              className="rounded-md border border-border px-5 py-3 text-sm font-medium transition-opacity hover:opacity-80"
+            >
+              {semesterFinished ? "Reabrir semestre" : "Finalizar Semestre"}
+            </button>
+          )}
+
           <PublicQr />
         </div>
       </footer>
@@ -1467,6 +1492,57 @@ export function CineclubePage({ memberPage = false }: { memberPage?: boolean }) 
       {restoreOpen && <RestoreMovieDialog onClose={() => setRestoreOpen(false)} />}
       {qrOpen && <QrDialog onClose={() => setQrOpen(false)} />}
       {colorsOpen && <ColorsDialog onClose={() => setColorsOpen(false)} />}
+      {semesterConfirmOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4 backdrop-blur-sm"
+          onClick={() => !semesterBusy && setSemesterConfirmOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-md rounded-lg border border-border bg-card p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="font-display text-2xl italic">
+              {semesterFinished ? "Reabrir semestre" : "Finalizar Semestre"}
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {semesterFinished
+                ? "O filme do mês volta a aparecer na página inicial."
+                : "O filme do mês sai da página inicial (continua no acervo) e um aviso de semestre finalizado aparece no lugar. Deseja continuar?"}
+            </p>
+            <div className="mt-6 flex flex-col gap-2">
+              <button
+                type="button"
+                disabled={semesterBusy}
+                onClick={async () => {
+                  setSemesterBusy(true);
+                  try {
+                    await setSemesterFinished(!semesterFinished);
+                    await qc.invalidateQueries({ queryKey: ["semester-finished"] });
+                    setSemesterConfirmOpen(false);
+                  } finally {
+                    setSemesterBusy(false);
+                  }
+                }}
+                className="rounded-md bg-primary px-5 py-3 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50"
+              >
+                {semesterBusy
+                  ? "Salvando..."
+                  : semesterFinished
+                    ? "Sim, reabrir semestre"
+                    : "Sim, finalizar semestre"}
+              </button>
+              <button
+                type="button"
+                disabled={semesterBusy}
+                onClick={() => setSemesterConfirmOpen(false)}
+                className="rounded-md border border-border px-5 py-3 text-sm font-medium hover:opacity-80 disabled:opacity-50"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <SiteColorApplier />
       {loginOpen && !denied && <MemberLoginDialog onClose={() => setLoginOpen(false)} />}
       {denied && <AccessDeniedDialog onClose={clearDenied} />}
